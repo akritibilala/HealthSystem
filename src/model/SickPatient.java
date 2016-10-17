@@ -2,18 +2,18 @@ package model;
 
 public class SickPatient {
 		
-	private String sickPatientId;
+	private String id;
 	
 	private HealthSystemUser user;
 	
 	private Disease disease;
 
-	public String getSickPatientId() {
-		return sickPatientId;
+	public String getId() {
+		return id;
 	}
 
-	public void setSickPatientId(String sickPatientId) {
-		this.sickPatientId = sickPatientId;
+	public void setId(String sickPatientId) {
+		this.id = sickPatientId;
 	}
 
 	public HealthSystemUser getUser() {

@@ -4,7 +4,7 @@ public class Authorization {
 	
 	private HealthSystemUser patient;
 	
-	private HealthSystemUser healthSupporter;
+	private HealthSupporter healthSupporter;
 	
 	private String healthSupporterType;
 	
@@ -18,11 +18,11 @@ public class Authorization {
 		this.patient = patient;
 	}
 
-	public HealthSystemUser getHealthSupporter() {
+	public HealthSupporter getHealthSupporter() {
 		return healthSupporter;
 	}
 
-	public void setHealthSupporter(HealthSystemUser healthSupporter) {
+	public void setHealthSupporter(HealthSupporter healthSupporter) {
 		this.healthSupporter = healthSupporter;
 	}
 
