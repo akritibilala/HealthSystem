@@ -12,7 +12,7 @@ public class Alert {
 	
 	private String date;
 	
-	private ObservationType obsType;
+	private Observation obsType;
 	
 	private HealthSystemUser patient;
 
@@ -56,11 +56,11 @@ public class Alert {
 		this.date = date;
 	}
 
-	public ObservationType getObsType() {
+	public Observation getObsType() {
 		return obsType;
 	}
 
-	public void setObsType(ObservationType obsType) {
+	public void setObsType(Observation obsType) {
 		this.obsType = obsType;
 	}
 

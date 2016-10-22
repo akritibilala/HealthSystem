@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Map;
+
 public class HealthSystemUser {
 	
 	private String id;
@@ -17,6 +19,8 @@ public class HealthSystemUser {
 	private String email;
 	
 	private String password;
+	
+	Map<Observation,Recommendation> obsRecommendationMap;
 
 	public String getId() {
 		return id;
@@ -81,6 +85,13 @@ public class HealthSystemUser {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	public Map<Observation, Recommendation> getObsRecommendationMap() {
+		return obsRecommendationMap;
+	}
+
+	public void setObsRecommendationMap(Map<Observation, Recommendation> obsRecommendationMap) {
+		this.obsRecommendationMap = obsRecommendationMap;
+	}
 
 }

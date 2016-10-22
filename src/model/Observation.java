@@ -1,8 +1,10 @@
 package model;
 
-public class ObservationType {
+public class Observation {
 	
 	private String id;
+	
+	private String type;
 	
 	private String description;
 	
@@ -41,6 +43,14 @@ public class ObservationType {
 	public void setMetric(String metric) {
 		this.metric = metric;
 	}
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 
 }

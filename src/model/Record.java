@@ -8,7 +8,7 @@ public class Record {
 	
 	private HealthSystemUser patient;
 	
-	private ObservationType obsType;
+	private Observation obsType;
 	
 	private String value;
 	
@@ -40,11 +40,11 @@ public class Record {
 		this.patient = patient;
 	}
 
-	public ObservationType getObsType() {
+	public Observation getObsType() {
 		return obsType;
 	}
 
-	public void setObsType(ObservationType obsType) {
+	public void setObsType(Observation obsType) {
 		this.obsType = obsType;
 	}
 

@@ -4,10 +4,6 @@ public class Recommendation {
 		
 	private String id;
 	
-	private String type;
-	
-	private ObservationType obsType;
-	
 	private Double lowerLimit;
 	
 	private Double upperLimit;
@@ -16,13 +12,7 @@ public class Recommendation {
 	
 	private String text;
 	
-	private Double alertPercentageThreshold;
-	
-	private Double alertObsThreshold;
-	
-	private Double alertFrequencyThreshold;
-	
-	
+	private HealthSupporter healthSupporter;
 
 	public String getId() {
 		return id;
@@ -30,22 +20,6 @@ public class Recommendation {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public ObservationType getObsType() {
-		return obsType;
-	}
-
-	public void setObsType(ObservationType obsType) {
-		this.obsType = obsType;
 	}
 
 	public Double getLowerLimit() {
@@ -80,28 +54,17 @@ public class Recommendation {
 		this.text = text;
 	}
 
-	public Double getAlertPercentageThreshold() {
-		return alertPercentageThreshold;
+	public HealthSupporter getHealthSupporter() {
+		return healthSupporter;
 	}
 
-	public void setAlertPercentageThreshold(Double alertPercentageThreshold) {
-		this.alertPercentageThreshold = alertPercentageThreshold;
+	public void setHealthSupporter(HealthSupporter healthSupporter) {
+		this.healthSupporter = healthSupporter;
 	}
-
-	public Double getAlertObsThreshold() {
-		return alertObsThreshold;
+	
+	@Override
+	public String toString() {
+		return "[LOWER_LIMIT = "+lowerLimit+" UPPER_LIMIT = "+upperLimit+" FREQUENCY = "+frequency+" TEXT = "+text+"]";
 	}
-
-	public void setAlertObsThreshold(Double alertObsThreshold) {
-		this.alertObsThreshold = alertObsThreshold;
-	}
-
-	public Double getAlertFrequencyThreshold() {
-		return alertFrequencyThreshold;
-	}
-
-	public void setAlertFrequencyThreshold(Double alertFrequencyThreshold) {
-		this.alertFrequencyThreshold = alertFrequencyThreshold;
-	}	
 
 }

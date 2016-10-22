@@ -2,15 +2,15 @@ package model;
 
 public class Disease {
 	
-	private String diseaseId;
+	private Integer diseaseId;
 	
 	private String name;
-
-	public String getDiseaseId() {
+	
+	public Integer getDiseaseId() {
 		return diseaseId;
 	}
 
-	public void setDiseaseId(String diseaseId) {
+	public void setDiseaseId(Integer diseaseId) {
 		this.diseaseId = diseaseId;
 	}
 
@@ -22,6 +22,10 @@ public class Disease {
 		this.name = name;
 	}
 	
+	@Override
+	public String toString() {
+		return "[DISEASE NAME = "+name+"]";
+	}
 	
 
 }
