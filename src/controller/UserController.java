@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import Utility.ConnectionClass;
+import model.Authorization;
 import model.Disease;
+import model.HealthSupporter;
 import model.HealthSystemUser;
+import model.Observation;
 import model.Recommendation;
 
 public class UserController {
@@ -176,6 +179,14 @@ public class UserController {
         return diseaseList;
 	}
 	
+	/**
+	 * This method will add a diagnosis to a patient.
+	 * It will also change the status of the user to a Sick Patient.
+	 * @param user
+	 * @param disease
+	 * @param date
+	 * @return
+	 */
 	public int setDiagnoses(HealthSystemUser user,Disease disease,Date date)
 	{
         PreparedStatement stmt = null;
@@ -259,6 +270,220 @@ public class UserController {
 	    stmt.setString(4, gender); // set input parameter 3
 	    stmt.setString(6, password);
 	    stmt.setDate(5, date);
+	    result = stmt.executeUpdate(); // execute insert statement
+			
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+		return result;
+	}
+	
+	public int updateUser(String id,String name,String address, String gender,Date date, String password)
+	{
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        int result = -1;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		PreparedStatement update = conn.prepareStatement
+			    ("UPDATE HEALTHSYSTEM_USER SET NAME = ?, ADDRESS = ?, GENDER = ?, DOB = ?, PASSWORD = ? WHERE id = ?");
+
+		update.setString(1, name);
+		update.setString(2, address);
+		update.setString(3, gender);
+		update.setDate(4, date);
+		update.setString(5, password);
+		update.setString(6, id);
+		
+		result = update.executeUpdate();
+			
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+		return result;
+	}
+	
+
+	/**
+	 * This method will add a health supporter for the given user.
+	 * It will also add the authorization date and type of the health supporter for the given user.
+	 * @param user Patient for whom a health supporter is to be added.
+	 * @param supporter Health Supporter which is to be added.
+	 * @param type Type of the health supporter
+	 * @param authorizationDate Authorization Date
+	 * @return
+	 */
+	public int addAUserAsHealthSupporter(HealthSystemUser user,HealthSupporter supporter, String type, Date authorizationDate)
+	{
+        PreparedStatement stmt1 = null;
+        PreparedStatement stmt2 = null;
+        Connection conn = null;
+        int result = -1;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		String query1 = "insert into HEALTH_SUPPORTER values(?)";
+
+	    stmt1 = conn.prepareStatement(query1); // create a statement
+	    stmt1.setString(1, supporter.getId()); // set input parameter 1
+	    result = stmt1.executeUpdate(); // execute insert statement
+	    
+		String query2 = "insert into AUTHORIZATION values(?,?,?,?)";
+
+	    stmt2 = conn.prepareStatement(query2); // create a statement
+	    stmt2.setString(1, user.getId()); // set input parameter 1
+	    stmt2.setString(2, supporter.getId()); // set input parameter 1
+	    stmt2.setString(3, type); // set input parameter 1
+	    stmt2.setDate(4, authorizationDate); // set input parameter 1
+	    result = stmt2.executeUpdate(); // execute insert statement
+			
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(stmt1);
+            ConnectionClass.close(stmt2);
+            ConnectionClass.close(conn);
+        }
+		return result;
+	}
+	
+	/**
+	 * This method will add a health supporter for the given user.
+	 * It will also add the authorization date and type of the health supporter for the given user.
+	 * @param user Patient for whom a health supporter is to be added.
+	 * @param supporter Health Supporter which is to be added.
+	 * @param type Type of the health supporter
+	 * @param authorizationDate Authorization Date
+	 * @return
+	 */
+	public int addExistingUserAsHealthSupporter(HealthSystemUser user,HealthSupporter supporter, String type, Date authorizationDate)
+	{
+        PreparedStatement stmt1 = null;
+        PreparedStatement stmt2 = null;
+        Connection conn = null;
+        int result = -1;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		String query2 = "insert into AUTHORIZATION(PATIENT_ID,HEALTH_SUPPORTER_ID,HEALTH_SUPPORTER_TYPE,AUTHORIZATION_DATE) values(?,?,?,?)";
+
+	    stmt2 = conn.prepareStatement(query2); // create a statement
+	    stmt2.setString(1, user.getId()); // set input parameter 1
+	    stmt2.setString(2, supporter.getId()); // set input parameter 1
+	    stmt2.setString(3, type); // set input parameter 1
+	    stmt2.setDate(4, authorizationDate); // set input parameter 1
+	    result = stmt2.executeUpdate(); // execute insert statement
+			
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(stmt1);
+            ConnectionClass.close(stmt2);
+            ConnectionClass.close(conn);
+        }
+		return result;
+	}
+	
+	public List<Authorization> getHealthSupporters(HealthSystemUser user)
+	{
+		List<Authorization> healthSupporterList = new ArrayList<>();
+		
+        Statement stmt = null;
+        ResultSet rs1 = null;
+        Connection conn = null;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		// Create a statement object that will be sending your
+		// SQL statements to the DBMS
+		stmt = conn.createStatement();
+
+		//Special Recommendation
+			rs1 = stmt.executeQuery("SELECT h.NAME,h.ADDRESS,h.GENDER,h.DOB,a.AUTHORIZATION_DATE,a.HEALTH_SUPPORTER_TYPE "
+				+ "FROM AUTHORIZATION a,HEALTHSYSTEM_USER h "
+				+ "WHERE a.PATIENT_ID='"+user.getId()+"' "
+				+ "AND a.HEALTH_SUPPORTER_ID = h.ID");
+			
+			while (rs1.next()) {
+				//Add health supporter
+				HealthSupporter supporter = new HealthSupporter();
+				String name = rs1.getString("NAME");
+				if(name!=null)
+					supporter.setName(name);
+				String address = rs1.getString("ADDRESS");
+				if(address!=null)
+					supporter.setAddress(address);
+				String gender = rs1.getString("GENDER");
+				if(gender!=null)
+					supporter.setGender(gender);
+				Date date = rs1.getDate("DOB");
+				if(date!=null)
+					supporter.setDateOfBirth(date);
+				//Add authorization
+				Authorization auth = new Authorization();
+				auth.setHealthSupporter(supporter);
+				auth.setPatient(user);
+				Date authDate = rs1.getDate("AUTHORIZATION_DATE");
+				if(authDate!=null)
+					auth.setAuthorizationDate(authDate);
+				String authType = rs1.getString("HEALTH_SUPPORTER_TYPE");
+				if(authType!=null)
+					auth.setHealthSupporterType(authType);
+				
+				healthSupporterList.add(auth);
+			}
+
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(rs1);
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+        return healthSupporterList;
+	}
+	
+	public int insertRecord( int id,HealthSystemUser hs,HealthSystemUser pt, Observation oid, int value, Date obsTime, Date recTime)
+	{
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        int result = -1;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		String query = "insert into RECORD values(?, ?, ?,?,?,?,?)";
+
+	    stmt = conn.prepareStatement(query); // create a statement
+	    stmt.setInt(1, id); // set input parameter 1
+	    stmt.setString(2, hs.getId()); // set input parameter 2
+	    stmt.setString(3, pt.getId()); // set input parameter 3
+	    stmt.setInt(4, oid.getId());
+	    stmt.setInt(5, value); // set input parameter 3
+	    stmt.setDate(6, obsTime );
+	    stmt.setDate(7, recTime);
+	    
 	    result = stmt.executeUpdate(); // execute insert statement
 			
         } catch(Throwable oops) {

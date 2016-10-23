@@ -2,7 +2,7 @@ package model;
 
 public class Observation {
 	
-	private String id;
+	private Integer id;
 	
 	private String type;
 	
@@ -12,11 +12,11 @@ public class Observation {
 	
 	private String metric;
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

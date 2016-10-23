@@ -1,16 +1,13 @@
 package model;
 
+import java.sql.Date;
 import java.util.Map;
 
 public class HealthSystemUser {
 	
 	private String id;
 	
-	private String type;
-	
-	private String dateOfBirth;
-	
-	private String date;
+	private Date dateOfBirth;
 	
 	private String gender;
 	
@@ -19,6 +16,8 @@ public class HealthSystemUser {
 	private String email;
 	
 	private String password;
+	
+	private String name;
 	
 	Map<Observation,Recommendation> obsRecommendationMap;
 
@@ -30,28 +29,12 @@ public class HealthSystemUser {
 		this.id = userId;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 	public String getGender() {
@@ -92,6 +75,19 @@ public class HealthSystemUser {
 
 	public void setObsRecommendationMap(Map<Observation, Recommendation> obsRecommendationMap) {
 		this.obsRecommendationMap = obsRecommendationMap;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return "[NAME ="+name+" ADDRESS = "+address+" GENDER = "+gender+" DOB = "+dateOfBirth+"]";
 	}
 
 }

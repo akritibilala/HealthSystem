@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Date;
+
 public class Record {
 	
 	private String id;
@@ -12,9 +14,9 @@ public class Record {
 	
 	private String value;
 	
-	private String obsDateTime;
+	private Date obsDateTime;
 	
-	private String recDateTime;
+	private Date recDateTime;
 
 	public String getId() {
 		return id;
@@ -57,19 +59,19 @@ public class Record {
 		this.value = value;
 	}
 
-	public String getObsDateTime() {
+	public Date getObsDateTime() {
 		return obsDateTime;
 	}
 
-	public void setObsDateTime(String obsDateTime) {
+	public void setObsDateTime(Date obsDateTime) {
 		this.obsDateTime = obsDateTime;
 	}
 
-	public String getRecDateTime() {
+	public Date getRecDateTime() {
 		return recDateTime;
 	}
 
-	public void setRecDateTime(String recDateTime) {
+	public void setRecDateTime(Date recDateTime) {
 		this.recDateTime = recDateTime;
 	}
 	
