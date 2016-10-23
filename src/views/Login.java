@@ -1,55 +1,37 @@
 package views;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-public class Login extends Application {
+import net.miginfocom.swing.MigLayout;
 
-	Label username;
-	Label password;
-	TextField uText;
-	TextField pText;
-	Button login;
+public class Login {
 
 	public static void main(String[] args) {
-		launch(args);
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocation(300, 400);
+		
+		JLabel nameLabel = new JLabel("Username");
+		JLabel passwordLabel = new JLabel("Password");
+		JTextField userField = new JTextField();
+		JTextField passwordField = new JTextField();
+		JButton button = new JButton("Login");
+		
+		JPanel panel = new JPanel(new MigLayout());
+		frame.add(panel);
+		
+		panel.add(nameLabel);
+		panel.add(userField, "wrap, grow, width 150:250");
+		panel.add(passwordLabel);
+		panel.add(passwordField, "wrap, grow, width 150:250");
+		panel.add(button);
+		
+		frame.pack();
+		frame.setVisible(true);
+		
 	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		username = new Label("Username");
-		uText = new TextField();
-		password = new Label("Password");
-		pText = new TextField();
-		login = new Button("Login");
-
-		login.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				login.setText("Hey");
-			}
-		});
-		;
-
-		VBox root = new VBox();
-		root.getChildren().add(username);
-		root.getChildren().add(uText);
-		root.getChildren().add(password);
-		root.getChildren().add(pText);
-		root.getChildren().add(login);
-
-		Scene scene = new Scene(root);
-		primaryStage.setScene(scene);
-		primaryStage.show();
-
-	}
-
 }
