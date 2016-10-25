@@ -12,6 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.UserController;
+import model.HealthSystemUser;
 import net.miginfocom.swing.MigLayout;
 
 public class Login {
@@ -60,9 +61,10 @@ public class Login {
                 pwd=String.copyValueOf(temp_pwd);
                 System.out.println("Username,Pwd:"+userField.getText()+","+pwd);
  
-                if(userController.login(userField.getText(), pwd))
+                HealthSystemUser user = userController.login(userField.getText(), pwd);
+                if(user!=null)
                 {
-                	PatientHomepage patientHomepage = new PatientHomepage();
+                	PatientHomepage patientHomepage = new PatientHomepage(user);
                 	patientHomepage.patientLayout();
                     System.out.println("yay");
                 }

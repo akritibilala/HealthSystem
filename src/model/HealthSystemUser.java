@@ -13,13 +13,23 @@ public class HealthSystemUser {
 	
 	private String address;
 	
-	private String email;
-	
 	private String password;
 	
 	private String name;
 	
 	Map<Observation,Recommendation> obsRecommendationMap;
+	
+	public HealthSystemUser() {
+	}
+
+	public HealthSystemUser(String id, Date dateOfBirth, String gender, String address,String name) {
+		super();
+		this.id = id;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.address = address;
+		this.name = name;
+	}
 
 	public String getId() {
 		return id;
@@ -51,14 +61,6 @@ public class HealthSystemUser {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword() {

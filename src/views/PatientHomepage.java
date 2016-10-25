@@ -8,11 +8,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import model.HealthSystemUser;
 import net.miginfocom.swing.MigLayout;
 
 public class PatientHomepage {
 	
+	private HealthSystemUser user;
+	
+	public PatientHomepage(HealthSystemUser user) {
+		this.user = user;
+	}
+
 	public void patientLayout() {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,9 +41,11 @@ public class PatientHomepage {
 		panel1.add(nameLabel);
 		panel1.add(passwordField, "wrap, grow, width 150:250");
 		
-		JComponent panel2 = new JPanel();
-		tabbedPane.addTab("Diagnoses", panel2);
+		//Diagnoses
+		DiagnosesPanel diagnosesPanel = new DiagnosesPanel(user);
+		tabbedPane.addTab("Diagnoses", diagnosesPanel);
 		
+		//HealthIndicators
 		JComponent panel3 = new JPanel();
 		tabbedPane.addTab("Health Indicators", panel3);
 
@@ -45,6 +56,13 @@ public class PatientHomepage {
 		JComponent panel5 = new JPanel();
 		panel5.setPreferredSize(new Dimension(410, 50));
 		tabbedPane.addTab("Health Supporters", panel5);
+		
+//		tabbedPane.addChangeListener(new ChangeListener() {
+//		      public void stateChanged(ChangeEvent e) {
+//		    	  if(tabbedPane.getSelectedComponent() instanceof DiagnosesPanel)
+//		    		  diagnosesPanel.populateDiagnoses();
+//		      }
+//		    });
 		
 		frame.pack();
 		frame.setVisible(true);

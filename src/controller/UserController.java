@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -134,88 +135,8 @@ public class UserController {
         return obsMap;
 	}
 	
-	public List<Disease> getDiagnoses(HealthSystemUser user)
-	{
-		List<Disease> diseaseList = new ArrayList<>();
-		
-        Statement stmt = null;
-        ResultSet rs1 = null;
-        Connection conn = null;
-		try
-		{
-			
-		conn = ConnectionClass.connect();
-		
-		// Create a statement object that will be sending your
-		// SQL statements to the DBMS
-		stmt = conn.createStatement();
-
-		//Special Recommendation
-			rs1 = stmt.executeQuery("SELECT d.NAME,d.DISEASE_ID "
-				+ "FROM SICK_PATIENT s,DISEASE d "
-				+ "WHERE s.SICK_PATIENT_ID='"+user.getId()+"' "
-				+ "AND d.DISEASE_ID = s.DISEASE_ID");
-			
-			while (rs1.next()) {
-				//Add disease
-				Disease disease = new Disease();
-				String name = rs1.getString("NAME");
-				if(name!=null)
-					disease.setName(name);
-				Integer id = rs1.getInt("DISEASE_ID");
-				if(id!=null)
-					disease.setDiseaseId(id);
-				diseaseList.add(disease);
-			}
-
-        } catch(Throwable oops) {
-            oops.printStackTrace();
-        }
-		finally {
-            ConnectionClass.close(rs1);
-            ConnectionClass.close(stmt);
-            ConnectionClass.close(conn);
-        }
-        return diseaseList;
-	}
 	
-	/**
-	 * This method will add a diagnosis to a patient.
-	 * It will also change the status of the user to a Sick Patient.
-	 * @param user
-	 * @param disease
-	 * @param date
-	 * @return
-	 */
-	public int setDiagnoses(HealthSystemUser user,Disease disease,Date date)
-	{
-        PreparedStatement stmt = null;
-        Connection conn = null;
-        int result = -1;
-		try
-		{
-			
-		conn = ConnectionClass.connect();
-		
-		String query = "insert into SICK_PATIENT(SICK_PATIENT_ID, DISEASE_ID, SINCE_DATE) values(?, ?, ?)";
-
-	    stmt = conn.prepareStatement(query); // create a statement
-	    stmt.setString(1, user.getId()); // set input parameter 1
-	    stmt.setInt(2, disease.getDiseaseId()); // set input parameter 2
-	    stmt.setDate(3, date); // set input parameter 3
-	    result = stmt.executeUpdate(); // execute insert statement
-			
-        } catch(Throwable oops) {
-            oops.printStackTrace();
-        }
-		finally {
-            ConnectionClass.close(stmt);
-            ConnectionClass.close(conn);
-        }
-		return result;
-	}
-	
-	public boolean login(String uid,String password)
+	public HealthSystemUser login(String uid,String password)
 	{
         Statement stmt = null;
         ResultSet rs1 = null;
@@ -229,7 +150,7 @@ public class UserController {
 		// SQL statements to the DBMS
 		stmt = conn.createStatement();
 
-		String sql = "SELECT ID "
+		String sql = "SELECT ID,NAME,DOB,GENDER,ADDRESS "
 				+ "FROM HEALTHSYSTEM_USER "
 				+ "WHERE ID='"+uid+"' "
 				+ "AND PASSWORD='"+password+"'";
@@ -237,7 +158,10 @@ public class UserController {
 			rs1 = stmt.executeQuery(sql);
 			
 			if(rs1.next()) {
-				return true;
+				//Add user details
+				HealthSystemUser user = new HealthSystemUser(rs1.getString("ID"),rs1.getDate("DOB"),rs1.getString("GENDER"),
+																rs1.getString("ADDRESS"),rs1.getString("NAME"));
+				return user;
 			}
 
         } catch(Throwable oops) {
@@ -248,7 +172,7 @@ public class UserController {
             ConnectionClass.close(stmt);
             ConnectionClass.close(conn);
         }
-        return false;
+        return null;
 	}
 	
 	public int insertUser(String id,String name,String address, String gender,Date date, String password)
@@ -461,39 +385,6 @@ public class UserController {
             ConnectionClass.close(conn);
         }
         return healthSupporterList;
-	}
-	
-	public int insertRecord( int id,HealthSystemUser hs,HealthSystemUser pt, Observation oid, int value, Date obsTime, Date recTime)
-	{
-        PreparedStatement stmt = null;
-        Connection conn = null;
-        int result = -1;
-		try
-		{
-			
-		conn = ConnectionClass.connect();
-		
-		String query = "insert into RECORD values(?, ?, ?,?,?,?,?)";
-
-	    stmt = conn.prepareStatement(query); // create a statement
-	    stmt.setInt(1, id); // set input parameter 1
-	    stmt.setString(2, hs.getId()); // set input parameter 2
-	    stmt.setString(3, pt.getId()); // set input parameter 3
-	    stmt.setInt(4, oid.getId());
-	    stmt.setInt(5, value); // set input parameter 3
-	    stmt.setDate(6, obsTime );
-	    stmt.setDate(7, recTime);
-	    
-	    result = stmt.executeUpdate(); // execute insert statement
-			
-        } catch(Throwable oops) {
-            oops.printStackTrace();
-        }
-		finally {
-            ConnectionClass.close(stmt);
-            ConnectionClass.close(conn);
-        }
-		return result;
 	}
 	
 }
