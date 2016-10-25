@@ -10,7 +10,7 @@ import model.Observation;
 
 public class RecordController {
 	
-	public int insertRecord( int id,HealthSystemUser hs,HealthSystemUser pt, Observation oid, int value, Date obsTime, Date recTime)
+	public int insertRecord( int id,HealthSystemUser hs,HealthSystemUser pt, Observation observation, int value, Date obsTime, Date recTime)
 	{
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -26,7 +26,7 @@ public class RecordController {
 	    stmt.setInt(1, id); // set input parameter 1
 	    stmt.setString(2, hs.getId()); // set input parameter 2
 	    stmt.setString(3, pt.getId()); // set input parameter 3
-	    stmt.setInt(4, oid.getId());
+	    stmt.setInt(4, observation.getId());
 	    stmt.setInt(5, value); // set input parameter 3
 	    stmt.setDate(6, obsTime );
 	    stmt.setDate(7, recTime);

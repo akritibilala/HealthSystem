@@ -23,12 +23,10 @@ public class ConnectionClass {
 	    String passwd = "200122949";	// Your 9 digit student ID number
 
 
-          	Connection conn = null;
-
 		// Get a connection from the first driver in the
 		// DriverManager list that recognizes the URL jdbcURL
 
-            	return DriverManager.getConnection(jdbcURL, user, passwd);
+       	return DriverManager.getConnection(jdbcURL, user, passwd);
 
         } catch(Throwable oops) {
             oops.printStackTrace();

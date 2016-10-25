@@ -51,6 +51,22 @@ public class Observation {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Observation)
+		{
+			Observation obs = (Observation) obj;
+			return this.getId().equals(obs.getId());
+		}
+		else
+		return super.equals(obj);
+	}
+	
+	@Override
+	public String toString() {
+		return "[ID = "+id+" TYPE = "+type+" DESCRIPTION "+description+" MEASURE = "+measure+" METRIC = "+metric+"]";
+	}
 
 
 }

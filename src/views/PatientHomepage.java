@@ -45,17 +45,19 @@ public class PatientHomepage {
 		DiagnosesPanel diagnosesPanel = new DiagnosesPanel(user);
 		tabbedPane.addTab("Diagnoses", diagnosesPanel);
 		
-		//HealthIndicators
-		JComponent panel3 = new JPanel();
-		tabbedPane.addTab("Health Indicators", panel3);
-
 		JComponent panel4 = new JPanel();
 		panel4.setPreferredSize(new Dimension(410, 50));
 		tabbedPane.addTab("Alerts", panel4);
 		
-		JComponent panel5 = new JPanel();
-		panel5.setPreferredSize(new Dimension(410, 50));
-		tabbedPane.addTab("Health Supporters", panel5);
+		//Health Supporters
+		HealthSupportersPanel hsPanel = new HealthSupportersPanel(user);
+		hsPanel.setPreferredSize(new Dimension(440,50));
+		tabbedPane.addTab("Health Supporters", hsPanel);
+		
+		//Health Supporters
+		HealthIndicatorsPanel hiPanel = new HealthIndicatorsPanel(user);
+		hiPanel.setPreferredSize(new Dimension(610,50));
+		tabbedPane.addTab("Health Indicators", hiPanel);
 		
 //		tabbedPane.addChangeListener(new ChangeListener() {
 //		      public void stateChanged(ChangeEvent e) {

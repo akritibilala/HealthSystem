@@ -3,11 +3,13 @@ package test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
 import controller.UserController;
 import model.Disease;
+import model.HealthSupporter;
 import model.HealthSystemUser;
 
 public class TestMain {
@@ -16,10 +18,10 @@ public class TestMain {
 		UserController user = new UserController();
 		HealthSystemUser u = new HealthSystemUser();
 		u.setId("P1");
-//		HealthSystemUser u4 = new HealthSystemUser();
-//		u4.setId("P3");
-//		HealthSupporter u1 = new HealthSupporter();
-//		u1.setId("P4");
+		HealthSystemUser u4 = new HealthSystemUser();
+		u4.setId("P3");
+		HealthSupporter u1 = new HealthSupporter();
+		u1.setId("P4");
 //		Map<String,Recommendation> rec = user.getRecommendations(u);
 //		printMap(rec);
 //		System.out.println(user.getDiagnoses(u));
@@ -30,11 +32,11 @@ public class TestMain {
 //		user.setDiagnoses(u, disease, date);
 //		System.out.println(user.login("P1", "password"));
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-//        Date parsed = format.parse("20161021");
-//        java.sql.Date sql = new java.sql.Date(parsed.getTime());
+        Date parsed = format.parse("20161021");
+        java.sql.Date sql = new java.sql.Date(parsed.getTime());
 //		user.updateUser("P5", "Omkara", "Mumbai", "MALE", sql, "password");
 		
-//		user.addAUserAsHealthSupporter(u4, u1, "PRIMARY", sql);
+		user.addAUserAsHealthSupporter(u4, u1, "PRIMARY", sql);
 		
 //		HealthSystemUser u = new HealthSystemUser();
 //		HealthSystemUser v = new HealthSystemUser();

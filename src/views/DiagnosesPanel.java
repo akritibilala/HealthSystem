@@ -30,7 +30,6 @@ public class DiagnosesPanel extends JPanel {
 	}
 	
 	public void populateDiagnoses() {
-		this.removeAll();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(10,22,0,0));
 		this.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -97,7 +96,7 @@ public class DiagnosesPanel extends JPanel {
 						int count = controller.deleteDiagnoses(user, diseaseToAdd);
 						if(count == 1)
 							JOptionPane.showMessageDialog(null, "Diagnosis removed successfully!","Remove Diagnosis",JOptionPane.ERROR_MESSAGE);
-						populateDiagnoses();
+						refreshPanel();
 					} catch (Exception e) {
 						e.printStackTrace();
 		               	JOptionPane.showMessageDialog(null, e.getMessage(),"Remove Diagnosis",JOptionPane.ERROR_MESSAGE);
@@ -105,6 +104,13 @@ public class DiagnosesPanel extends JPanel {
 	            }
 			}
 		});
+	}
+	
+	void refreshPanel()
+	{
+		this.removeAll();
+		this.populateDiagnoses();
+		this.repaint();
 	}
 
 	private void addDiagnoses(JComponent diagnosesPanel) {
@@ -133,7 +139,7 @@ public class DiagnosesPanel extends JPanel {
 						int count = controller.setDiagnoses(user, diseaseToAdd, date);
 						if(count == 1)
 							JOptionPane.showMessageDialog(null, "Diagnosis added successfully!","Add Diagnosis",JOptionPane.ERROR_MESSAGE);
-						populateDiagnoses();
+						refreshPanel();
 					} catch (Exception e) {
 						e.printStackTrace();
 		               	JOptionPane.showMessageDialog(null, e.getMessage(),"Add Diagnosis",JOptionPane.ERROR_MESSAGE);

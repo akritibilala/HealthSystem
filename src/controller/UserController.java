@@ -13,7 +13,6 @@ import java.util.Map;
 
 import Utility.ConnectionClass;
 import model.Authorization;
-import model.Disease;
 import model.HealthSupporter;
 import model.HealthSystemUser;
 import model.Observation;
@@ -21,14 +20,14 @@ import model.Recommendation;
 
 public class UserController {
 	
-	public Map<String,Recommendation> getRecommendations(HealthSystemUser user)
+	public Map<Observation,Recommendation> getRecommendations(HealthSystemUser user)
 	{
         Statement stmt = null;
         ResultSet rs1 = null;
         ResultSet rs2 = null;
         ResultSet rs3 = null;
         Connection conn = null;
-        Map<String,Recommendation> obsMap = new HashMap<String,Recommendation>();
+        Map<Observation,Recommendation> obsMap = new HashMap<Observation,Recommendation>();
 		try
 		{
 			
@@ -39,13 +38,19 @@ public class UserController {
 		stmt = conn.createStatement();
 
 		//Special Recommendation
-			rs1 = stmt.executeQuery("SELECT o.OBSERVATION_TYPE,s.UPPER_LIMIT,s.LOWER_LIMIT, s.FREQUENCY,s.TEXT FROM SPECIAL_RECOMMENDATION s,OBSERVATION o "
+			rs1 = stmt.executeQuery("SELECT o.OBSERVATION_ID, o.DESCRIPTION, o.METRIC, o.MEASURE, o.OBSERVATION_TYPE,s.UPPER_LIMIT,s.LOWER_LIMIT, s.FREQUENCY,s.TEXT FROM SPECIAL_RECOMMENDATION s,OBSERVATION o "
 				+ "WHERE s.PATIENT_ID='"+user.getId()+"' "
 				+ "AND s.OBS_ID = o.OBSERVATION_ID");
 			
 			while (rs1.next()) {
 				//Add observation
-				String observation = rs1.getString("OBSERVATION_TYPE");
+				Observation obs = new Observation();
+				obs.setId(rs1.getInt("OBSERVATION_ID"));
+				obs.setDescription(rs1.getString("DESCRIPTION"));
+				obs.setMeasure(rs1.getString("MEASURE"));
+				obs.setMetric(rs1.getString("METRIC"));
+				obs.setType(rs1.getString("OBSERVATION_TYPE"));
+				
 				//Add recommendation
 				Recommendation recommendation = new Recommendation();
 				String upperLimit = rs1.getString("UPPER_LIMIT");
@@ -60,20 +65,25 @@ public class UserController {
 				String text = rs1.getString("TEXT");
 				if(text!=null)
 				recommendation.setText((text));
-				obsMap.put(observation, recommendation);
+				obsMap.put(obs, recommendation);
 			}
 		
 			//Disease Recommendation
-			rs2 = stmt.executeQuery("SELECT o.OBSERVATION_TYPE, s.UPPER_LIMIT,s.LOWER_LIMIT, s.FREQUENCY, s.TEXT "
+			rs2 = stmt.executeQuery("SELECT o.OBSERVATION_ID, o.DESCRIPTION, o.METRIC, o.MEASURE, o.OBSERVATION_TYPE, s.UPPER_LIMIT,s.LOWER_LIMIT, s.FREQUENCY, s.TEXT "
 				+ "FROM DISEASE_RECOMMENDATION s,OBSERVATION o "
 				+ "WHERE s.DISEASE_ID IN (SELECT DISEASE_ID from SICK_PATIENT where SICK_PATIENT_ID = '"+user.getId()+"')"
 				+ "AND s.OBS_ID = o.OBSERVATION_ID");
 		
 			while (rs2.next()) {
 				//Add observation
-				String observation = rs2.getString("OBSERVATION_TYPE");
-				//Add recommendation
-				if(!obsMap.containsKey(observation))
+				Observation obs = new Observation();
+				obs.setId(rs2.getInt("OBSERVATION_ID"));
+				obs.setDescription(rs2.getString("DESCRIPTION"));
+				obs.setMeasure(rs2.getString("MEASURE"));
+				obs.setMetric(rs2.getString("METRIC"));
+				obs.setType(rs2.getString("OBSERVATION_TYPE"));
+				
+				if(!obsMap.containsKey(obs))
 				{
 					//Only add recommendation if it does not added by special recommendation
 					Recommendation recommendation = new Recommendation();
@@ -89,20 +99,25 @@ public class UserController {
 					String text = rs2.getString("TEXT");
 					if(text!=null)
 					recommendation.setText((text));
-					obsMap.put(observation, recommendation);	
+					obsMap.put(obs, recommendation);	
 				}
 			}
 		
-			//GEneral Recommendation
-			rs3 = stmt.executeQuery("SELECT o.OBSERVATION_TYPE, s.UPPER_LIMIT,s.LOWER_LIMIT, s.FREQUENCY, s.TEXT "
+			//General Recommendation
+			rs3 = stmt.executeQuery("SELECT o.OBSERVATION_ID, o.DESCRIPTION, o.METRIC, o.MEASURE, o.OBSERVATION_TYPE, s.UPPER_LIMIT,s.LOWER_LIMIT, s.FREQUENCY, s.TEXT "
 				+ "FROM GENERAL_RECOMMENDATION s,OBSERVATION o "
 				+ "WHERE s.OBS_ID = o.OBSERVATION_ID");
 		
 			while (rs3.next()) {
 				//Add observation
-				String observation = rs3.getString("OBSERVATION_TYPE");
+				Observation obs = new Observation();
+				obs.setId(rs3.getInt("OBSERVATION_ID"));
+				obs.setDescription(rs3.getString("DESCRIPTION"));
+				obs.setMeasure(rs3.getString("MEASURE"));
+				obs.setMetric(rs3.getString("METRIC"));
+				obs.setType(rs3.getString("OBSERVATION_TYPE"));
 				//Add recommendation
-				if(!obsMap.containsKey(observation))
+				if(!obsMap.containsKey(obs))
 				{
 					//Only add recommendation if it does not added by special recommendation
 					Recommendation recommendation = new Recommendation();
@@ -118,12 +133,66 @@ public class UserController {
 					String text = rs3.getString("TEXT");
 					if(text!=null)
 					recommendation.setText((text));
-					obsMap.put(observation, recommendation);	
+					obsMap.put(obs, recommendation);	
 				}
 			}
 
         } catch(Throwable oops) {
             oops.printStackTrace();
+            {
+	            	Observation obs = new Observation();
+	            	obs.setId(1);
+	            	obs.setDescription(("Sample DESCRIPTION"));
+	            	obs.setMeasure(("Sample MEASURE"));
+	            	obs.setMetric(("Sample METRIC"));
+	            	obs.setType(("Sample OBSERVATION_TYPE"));
+	            	//Add recommendation
+	            	if(!obsMap.containsKey(obs))
+	            	{
+	            		//Only add recommendation if it does not added by special recommendation
+	            		Recommendation recommendation = new Recommendation();
+	            		String upperLimit = "75";
+	            		if(upperLimit!=null)
+	            			recommendation.setUpperLimit(Double.parseDouble(upperLimit));
+	            		String lowerLimit = "30";
+	            		if(lowerLimit!=null)
+	            			recommendation.setLowerLimit(Double.parseDouble(lowerLimit));
+	            		String frequency = "7";
+	            		if(frequency!=null)
+	            			recommendation.setFrequency(Integer.parseInt(frequency));
+	            		String text = "abcd";
+	            		if(text!=null)
+	            			recommendation.setText((text));
+	            		obsMap.put(obs, recommendation);	
+	            	}
+            }
+            {
+            	Observation obs = new Observation();
+            	obs.setId(2);
+            	obs.setDescription(("Sample DESCRIPTION 2"));
+            	obs.setMeasure(("Sample MEASURE 2"));
+            	obs.setMetric(("Sample METRIC 2"));
+            	obs.setType(("Sample OBSERVATION_TYPE 2"));
+            	//Add recommendation
+            	if(!obsMap.containsKey(obs))
+            	{
+            		//Only add recommendation if it does not added by special recommendation
+            		Recommendation recommendation = new Recommendation();
+            		String upperLimit = "30";
+            		if(upperLimit!=null)
+            			recommendation.setUpperLimit(Double.parseDouble(upperLimit));
+            		String lowerLimit = "10";
+            		if(lowerLimit!=null)
+            			recommendation.setLowerLimit(Double.parseDouble(lowerLimit));
+            		String frequency = "8";
+            		if(frequency!=null)
+            			recommendation.setFrequency(Integer.parseInt(frequency));
+            		String text = null;
+            		if(text!=null)
+            			recommendation.setText((text));
+            		obsMap.put(obs, recommendation);	
+            	}
+        }
         }
 		finally {
             ConnectionClass.close(rs1);
@@ -325,7 +394,7 @@ public class UserController {
 		return result;
 	}
 	
-	public List<Authorization> getHealthSupporters(HealthSystemUser user)
+	public List<Authorization> getHealthSupportersAuthorizations(HealthSystemUser user)
 	{
 		List<Authorization> healthSupporterList = new ArrayList<>();
 		
@@ -342,7 +411,7 @@ public class UserController {
 		stmt = conn.createStatement();
 
 		//Special Recommendation
-			rs1 = stmt.executeQuery("SELECT h.NAME,h.ADDRESS,h.GENDER,h.DOB,a.AUTHORIZATION_DATE,a.HEALTH_SUPPORTER_TYPE "
+			rs1 = stmt.executeQuery("SELECT h.ID,h.NAME,h.ADDRESS,h.GENDER,h.DOB,a.AUTHORIZATION_DATE,a.HEALTH_SUPPORTER_TYPE "
 				+ "FROM AUTHORIZATION a,HEALTHSYSTEM_USER h "
 				+ "WHERE a.PATIENT_ID='"+user.getId()+"' "
 				+ "AND a.HEALTH_SUPPORTER_ID = h.ID");
@@ -350,6 +419,9 @@ public class UserController {
 			while (rs1.next()) {
 				//Add health supporter
 				HealthSupporter supporter = new HealthSupporter();
+				String id = rs1.getString("ID");
+				if(id!=null)
+					supporter.setId(id);
 				String name = rs1.getString("NAME");
 				if(name!=null)
 					supporter.setName(name);
