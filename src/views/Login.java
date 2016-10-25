@@ -1,25 +1,34 @@
 package views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import controller.UserController;
 import net.miginfocom.swing.MigLayout;
 
 public class Login {
+	JFrame frame = new JFrame();
+	JLabel nameLabel = new JLabel("Username");
+	JLabel passwordLabel = new JLabel("Password");
+	JTextField userField = new JTextField();
+	JPasswordField passwordField = new JPasswordField();
+	JButton button = new JButton("Login");
+	UserController userController = new UserController();
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
+	public void loginLayout() {
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocation(300, 400);
 		
-		JLabel nameLabel = new JLabel("Username");
-		JLabel passwordLabel = new JLabel("Password");
-		JTextField userField = new JTextField();
-		JTextField passwordField = new JTextField();
-		JButton button = new JButton("Login");
+		button.addActionListener(new LoginAuthentication());
 		
 		JPanel panel = new JPanel(new MigLayout());
 		frame.add(panel);
@@ -34,4 +43,37 @@ public class Login {
 		frame.setVisible(true);
 		
 	}
+	
+	public static void main(String[] args) {
+		Login login = new Login();
+		login.loginLayout();
+	}
+	
+	class LoginAuthentication implements ActionListener
+    {
+        public void actionPerformed(ActionEvent ae)
+        {
+            if(ae.getSource()==button)
+            {
+                char[] temp_pwd=passwordField.getPassword();
+                String pwd=null;
+                pwd=String.copyValueOf(temp_pwd);
+                System.out.println("Username,Pwd:"+userField.getText()+","+pwd);
+ 
+                if(userController.login(userField.getText(), pwd))
+                {
+                	PatientHomepage patientHomepage = new PatientHomepage();
+                	patientHomepage.patientLayout();
+                    System.out.println("yay");
+                }
+                else
+                {
+                	JOptionPane.showMessageDialog(null, "Login failed!","Failed!!",
+                            JOptionPane.ERROR_MESSAGE);
+                    System.out.println("sorry");
+                }
+            }
+        }
+ 
+    }
 }
