@@ -40,6 +40,9 @@ public class Login {
 		panel.add(passwordField, "wrap, grow, width 150:250");
 		panel.add(button);
 		
+		frame.getRootPane().setDefaultButton(button);
+		button.requestFocus();
+		
 		frame.pack();
 		frame.setVisible(true);
 		
@@ -67,6 +70,7 @@ public class Login {
                 	PatientHomepage patientHomepage = new PatientHomepage(user);
                 	patientHomepage.patientLayout();
                     System.out.println("yay");
+                    frame.dispose();
                 }
                 else
                 {

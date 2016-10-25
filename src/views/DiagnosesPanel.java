@@ -1,20 +1,23 @@
 package views;
 
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.plaf.PanelUI;
+import javax.swing.SwingConstants;
 
 import controller.DiseaseController;
-import controller.UserController;
 import model.Disease;
 import model.HealthSystemUser;
 
@@ -28,8 +31,11 @@ public class DiagnosesPanel extends JPanel {
 	
 	public void populateDiagnoses() {
 		this.removeAll();
-		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBorder(BorderFactory.createEmptyBorder(10,22,0,0));
+		this.setAlignmentX(Component.LEFT_ALIGNMENT);
 		JLabel diseasesLabel = new JLabel("Diseases:");
+		diseasesLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.add(diseasesLabel);
 		
 		DiseaseController controller = new DiseaseController();
@@ -39,6 +45,8 @@ public class DiagnosesPanel extends JPanel {
 			for(Disease disease : diseases)
 			{
 				JLabel diseaseLabel = new JLabel(disease.getName());
+				diseasesLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+				diseaseLabel.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
 				this.add(diseaseLabel);
 			}	
 		}
@@ -47,17 +55,26 @@ public class DiagnosesPanel extends JPanel {
 			JLabel diseaseLabel = new JLabel("No diseases! :)");
 			this.add(diseaseLabel);
 		}
-		
+//		
 		//Add a Diagnosis
-		addDiagnoses(this);
+		JComponent horizontalPanel1 = new JPanel();
+		horizontalPanel1.setLayout(new FlowLayout(FlowLayout.LEFT));
+		horizontalPanel1.setAlignmentX(Component.LEFT_ALIGNMENT);
+		addDiagnoses(horizontalPanel1);
+		this.add(horizontalPanel1);
+		
 		
 		//Delete a Diagnosis
-		deleteDiagnoses(this);
+		JComponent horizontalPanel2 = new JPanel();
+		horizontalPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
+		horizontalPanel2.setAlignmentX(Component.LEFT_ALIGNMENT);
+		deleteDiagnoses(horizontalPanel2);
+		this.add(horizontalPanel2);
 	}
 
-	private void deleteDiagnoses(JComponent diagnosesPanel2) {
+	private void deleteDiagnoses(JComponent diagnosesPanel) {
 		JLabel addDiagnosisLabel = new JLabel("Remove diagnosis:");
-		this.add(addDiagnosisLabel);
+		diagnosesPanel.add(addDiagnosisLabel);
 	    JComboBox<String> diagnosesCombobox = new JComboBox<String>();
 	    DiseaseController userController = new DiseaseController();
 	    List<Disease> diseaseList = userController.getDiagnoses(user);
@@ -65,9 +82,9 @@ public class DiagnosesPanel extends JPanel {
 	    {
 	    	diagnosesCombobox.addItem(disease.getName());
 	    }
-	    this.add(diagnosesCombobox);
+	    diagnosesPanel.add(diagnosesCombobox);
 	    JButton removeDiagnosisButton = new JButton("Remove Diagnosis");
-	    this.add(removeDiagnosisButton);
+	    diagnosesPanel.add(removeDiagnosisButton);
 	    removeDiagnosisButton.addActionListener(new ActionListener() {
 			
 			@Override
