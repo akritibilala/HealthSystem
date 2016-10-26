@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="src/libs/ojdbc14.jar"/>
 	<classpathentry kind="lib" path="src/libs/miglayout-core-4.2.jar"/>
 	<classpathentry kind="lib" path="src/libs/miglayout-swing-4.2.jar"/>
+	<classpathentry kind="lib" path="src/libs/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="lib" path="src/libs/jgoodies-common-1.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

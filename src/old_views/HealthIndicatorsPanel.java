@@ -1,7 +1,6 @@
-package views;
+package old_views;
 
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import controller.UserController;
 import model.HealthSystemUser;
@@ -82,8 +82,8 @@ public class HealthIndicatorsPanel extends JPanel {
 		healthSupportersLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.add(addObservationLabel);
 		
-		{
 			JComponent horizontalPanel1 = new JPanel();
+			horizontalPanel1.setAlignmentX(LEFT_ALIGNMENT);
 			JLabel addObsType= new JLabel("Observation Type:");
 			healthSupportersLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 			Set<Observation> observations = recoMap.keySet();
@@ -93,29 +93,51 @@ public class HealthIndicatorsPanel extends JPanel {
 		    {
 		    	addObsCombobox.addItem(observation.getType());
 		    }
+		    horizontalPanel1.add(addObsType);
 		    horizontalPanel1.add(addObsCombobox);
-			horizontalPanel1.add(addObsType);
 			
 			this.add(horizontalPanel1);
-		}
 		
-		{
-			JComponent horizontalPanel1 = new JPanel();
-			JLabel addObsType= new JLabel("Observation Type:");
-			healthSupportersLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-			Set<Observation> observations = recoMap.keySet();
-			
-			JComboBox<String> addObsCombobox = new JComboBox<String>();
-		    for(Observation observation : observations)
-		    {
-		    	addObsCombobox.addItem(observation.getType());
-		    }
-		    horizontalPanel1.add(addObsCombobox);
-			horizontalPanel1.add(addObsType);
-			
-			this.add(horizontalPanel1);
-		}
+//			JComponent horizontalPanel2 = new JPanel();
+//			horizontalPanel2.setAlignmentX(LEFT_ALIGNMENT);
+			JLabel valueType= new JLabel("Value : ");
+			JTextField valueField = new JTextField();
+			this.add(valueType);
+		    this.add(valueField,"wrap, grow, width 150:250");
+//			this.add(horizontalPanel2);
 		
+			JComponent horizontalPanel3 = new JPanel();
+			horizontalPanel3.setAlignmentX(LEFT_ALIGNMENT);
+			JLabel dateType= new JLabel("Date : ");
+			JTextField dateValueField = new JTextField();
+			horizontalPanel3.add(dateType);
+		    horizontalPanel3.add(dateValueField,"wrap, grow, width 150:250");
+			this.add(horizontalPanel3);
+		
+		JButton addDiagnosisButton = new JButton("Add Observation");
+		addDiagnosisButton.setAlignmentX(LEFT_ALIGNMENT);
+	    this.add(addDiagnosisButton);
+//	    addDiagnosisButton.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent arg0) {
+//	            {
+////	                int index = diagnosesCombobox.getSelectedIndex();
+////	                Disease diseaseToAdd = diseaseList.get(index);
+////	                DiseaseController controller = new DiseaseController();
+////	                java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+////	                try {
+////						int count = controller.setDiagnoses(user, diseaseToAdd, date);
+////						if(count == 1)
+////							JOptionPane.showMessageDialog(null, "Diagnosis added successfully!","Add Diagnosis",JOptionPane.ERROR_MESSAGE);
+////						refreshPanel();
+////					} catch (Exception e) {
+////						e.printStackTrace();
+////		               	JOptionPane.showMessageDialog(null, e.getMessage(),"Add Diagnosis",JOptionPane.ERROR_MESSAGE);
+////					}
+//	            }
+//			}
+//		});
 //		horizontalPanel1.setLayout(new FlowLayout(FlowLayout.LEFT));
 //		horizontalPanel1.setAlignmentX(Component.LEFT_ALIGNMENT);
 //		addObservation(horizontalPanel1);
@@ -149,26 +171,26 @@ public class HealthIndicatorsPanel extends JPanel {
 	    diagnosesPanel.add(diagnosesCombobox);
 	    JButton addObservationButton = new JButton("Add Observation");
 	    diagnosesPanel.add(addObservationButton);
-	    addObservationButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-	            {
-//	                int index = diagnosesCombobox.getSelectedIndex();
-//	                Disease diseaseToAdd = diseaseList.get(index);
-//	                DiseaseController controller = new DiseaseController();
-//	                java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-//	                try {
-//						int count = controller.setDiagnoses(user, diseaseToAdd, date);
-//						if(count == 1)
-//							JOptionPane.showMessageDialog(null, "Diagnosis added successfully!","Add Diagnosis",JOptionPane.ERROR_MESSAGE);
-//						refreshPanel();
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//		               	JOptionPane.showMessageDialog(null, e.getMessage(),"Add Diagnosis",JOptionPane.ERROR_MESSAGE);
-//					}
-	            }
-			}
-		});
+//	    addObservationButton.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent arg0) {
+//	            {
+////	                int index = diagnosesCombobox.getSelectedIndex();
+////	                Disease diseaseToAdd = diseaseList.get(index);
+////	                DiseaseController controller = new DiseaseController();
+////	                java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+////	                try {
+////						int count = controller.setDiagnoses(user, diseaseToAdd, date);
+////						if(count == 1)
+////							JOptionPane.showMessageDialog(null, "Diagnosis added successfully!","Add Diagnosis",JOptionPane.ERROR_MESSAGE);
+////						refreshPanel();
+////					} catch (Exception e) {
+////						e.printStackTrace();
+////		               	JOptionPane.showMessageDialog(null, e.getMessage(),"Add Diagnosis",JOptionPane.ERROR_MESSAGE);
+////					}
+//	            }
+//			}
+//		});
 	}
 }
