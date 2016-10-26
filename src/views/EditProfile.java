@@ -30,7 +30,7 @@ public class EditProfile extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
-	private HealthSystemUser user = Main.currentUser;
+	private HealthSystemUser user;
 	private JLabel lblPassword;
 	private JPasswordField passwordField;
 
@@ -41,7 +41,7 @@ public class EditProfile extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EditProfile frame = new EditProfile();
+					EditProfile frame = new EditProfile(Main.currentUser);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,8 +53,8 @@ public class EditProfile extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EditProfile() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public EditProfile(HealthSystemUser user) {
+		this.user = user;
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

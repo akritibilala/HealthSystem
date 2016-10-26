@@ -244,6 +244,45 @@ public class UserController {
         return null;
 	}
 	
+	public List<HealthSystemUser> getAllUsers()
+	{
+		List<HealthSystemUser> userList = new ArrayList<HealthSystemUser>();
+        Statement stmt = null;
+        ResultSet rs1 = null;
+        Connection conn = null;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		// Create a statement object that will be sending your
+		// SQL statements to the DBMS
+		stmt = conn.createStatement();
+
+		String sql = "SELECT * "
+				+ "FROM HEALTHSYSTEM_USER";
+			//Login
+			rs1 = stmt.executeQuery(sql);
+			
+			while(rs1.next()) {
+				//Add user details
+				HealthSystemUser user = new HealthSystemUser(rs1.getString("ID"),rs1.getDate("DOB"),rs1.getString("GENDER"),
+																rs1.getString("ADDRESS"),rs1.getString("NAME"),rs1.getString("TYPE"));
+				userList.add(user);
+			}
+			return userList;
+
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(rs1);
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+        return null;
+	}
+	
 	public int insertUser(String id,String name,String address, String gender,Date date, String password,String type)
 	{
         PreparedStatement stmt = null;
@@ -364,7 +403,7 @@ public class UserController {
 	 * @param authorizationDate Authorization Date
 	 * @return
 	 */
-	public int addExistingUserAsHealthSupporter(HealthSystemUser user,HealthSupporter supporter, String type, Date authorizationDate)
+	public int addExistingUserAsHealthSupporter(HealthSystemUser user,HealthSystemUser supporter, String type, Date authorizationDate)
 	{
         PreparedStatement stmt1 = null;
         PreparedStatement stmt2 = null;
@@ -383,10 +422,19 @@ public class UserController {
 	    stmt2.setString(3, type); // set input parameter 1
 	    stmt2.setDate(4, authorizationDate); // set input parameter 1
 	    result = stmt2.executeUpdate(); // execute insert statement
+	    
+		    if(result == 1)
+		    {
+			    	PreparedStatement update = conn.prepareStatement
+			    			("UPDATE HEALTHSYSTEM_USER SET TYPE = 'Both' where TYPE = 'Patient' AND id = ?");
+			    	update.setString(1, supporter.getId());
+			    	update.executeUpdate();
+			    	
+		    }
+		} catch(Throwable oops) {
+			oops.printStackTrace();
+		}
 			
-        } catch(Throwable oops) {
-            oops.printStackTrace();
-        }
 		finally {
             ConnectionClass.close(stmt1);
             ConnectionClass.close(stmt2);
