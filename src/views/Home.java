@@ -91,7 +91,7 @@ public class Home extends JFrame {
 		JButton btnNewButton_3 = new JButton("Health Supporters");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new HealthSupporter().setVisible(true);
+				new HealthSupporterPanel().setVisible(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();

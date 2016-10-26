@@ -135,6 +135,8 @@ public class Diagnosis extends JFrame {
 						int count = controller.deleteDiagnoses(Main.currentUser, diseaseToAdd);
 						if(count == 1)
 							JOptionPane.showMessageDialog(null, "Diagnosis removed successfully!","Remove Diagnosis",JOptionPane.INFORMATION_MESSAGE);
+						else
+							JOptionPane.showMessageDialog(null, "Error in removing diagnosis!","Remove Diagnosis",JOptionPane.ERROR_MESSAGE);
 							refreshPanel();
 					} catch (Exception e) {
 						e.printStackTrace();

@@ -6,10 +6,19 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.SpringLayout;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.awt.CardLayout;
+import javax.swing.JLabel;
+import java.awt.ScrollPane;
+import java.awt.Label;
+import javax.swing.BoxLayout;
 
-public class HealthSupporter extends JFrame {
+public class HealthSupporterPanel extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -18,7 +27,7 @@ public class HealthSupporter extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HealthSupporter frame = new HealthSupporter();
+					HealthSupporterPanel frame = new HealthSupporterPanel();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -30,13 +39,20 @@ public class HealthSupporter extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public HealthSupporter() {
+	public HealthSupporterPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		Label label = new Label("New label");
+		label.setBounds(28, 166, 422, 24);
+		contentPane.add(label);
+		
+		table = new JTable();
+		table.setBounds(69, 17, 306, 143);
+		contentPane.add(table);
 	}
-
 }

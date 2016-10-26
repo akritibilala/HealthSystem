@@ -16,12 +16,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controller.ObservationController;
 import controller.RecordController;
+import model.HealthSystemUser;
 import model.Observation;
 
 public class Record extends JFrame {
@@ -124,18 +126,25 @@ public class Record extends JFrame {
 				String value = txtValue.getText();
 				String date = txtDateOfObs.getText();
 				
-//				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//				Date temp = null;
-//				try {
-//					temp=sdf.parse(date);
-//				} catch (ParseException e1) {
-//					e1.printStackTrace();
-//				}
-//				java.sql.Date recordingTime = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-//	        	java.sql.Date sql_temp = new java.sql.Date(temp.getTime());
-//	        	RecordController record = new RecordController();
-//				record.insertRecord(2,u,v, observation, value, sql_temp,recordingTime);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				Date temp = null;
+				try {
+					temp=sdf.parse(date);
 				
+				java.sql.Date recordingTime = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+	        	java.sql.Date sql_temp = new java.sql.Date(temp.getTime());
+	        	RecordController record = new RecordController();
+	        	Main.currentUser = new HealthSystemUser();
+	        	Main.currentUser.setId("P1");
+				int count = record.insertRecord(Main.currentUser,observation, value, sql_temp,recordingTime);
+				if(count == 1)
+						JOptionPane.showMessageDialog(null, "Observation Record added successfully!","Add Record",JOptionPane.INFORMATION_MESSAGE);
+				else
+					JOptionPane.showMessageDialog(null, "Error in adding observation record!","Add Record",JOptionPane.ERROR_MESSAGE);
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error in adding observation record!","Add Record",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		GridBagConstraints gbc_btnAddObservation = new GridBagConstraints();

@@ -167,7 +167,7 @@ public class DiseaseController {
 	    stmt.setInt(2, disease.getDiseaseId()); // set input parameter 2
 	    stmt.setDate(3, date); // set input parameter 3
 	    result = stmt.executeUpdate(); // execute insert statement
-			
+	    
         } catch(SQLException oops) {
         	oops.printStackTrace();
             throw new Exception("Error in adding diagnosis to patient : "+user.getName());
