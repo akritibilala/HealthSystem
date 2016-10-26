@@ -1,26 +1,24 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controller.UserController;
 import model.HealthSystemUser;
-import oracle.sql.DATE;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
-
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.awt.event.ActionEvent;
-import javax.swing.JPasswordField;
 
 public class EditProfile extends JFrame {
 
@@ -29,7 +27,7 @@ public class EditProfile extends JFrame {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private JTextField textField_4;
+	private JFormattedTextField textField_4;
 	private HealthSystemUser user = Main.currentUser;
 	private JLabel lblPassword;
 	private JPasswordField passwordField;
@@ -52,8 +50,9 @@ public class EditProfile extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws ParseException 
 	 */
-	public EditProfile() {
+	public EditProfile() throws ParseException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -105,12 +104,13 @@ public class EditProfile extends JFrame {
 		lblDateOfBirth.setBounds(10, 112, 86, 14);
 		contentPane.add(lblDateOfBirth);
 		
-		textField_4 = new JFormattedTextField();
-		textField_4.setText(user.getDateOfBirth().toString());
+		SimpleDateFormat format = new SimpleDateFormat("dd-mm-yy");
+		textField_4 = new JFormattedTextField(format);
+		textField_4.setValue(user.getDateOfBirth());
 		textField_4.setBounds(115, 109, 110, 20);
 		contentPane.add(textField_4);
 		textField_4.setColumns(10);
-		
+		/*
 		lblPassword = new JLabel("Password");
 		lblPassword.setBounds(10, 137, 86, 14);
 		contentPane.add(lblPassword);
@@ -118,14 +118,17 @@ public class EditProfile extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setText(user.getPassword());
 		passwordField.setBounds(115, 134, 110, 20);
-		contentPane.add(passwordField);
+		contentPane.add(passwordField);*/
 		
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserController userController = new UserController();
-				//userController.updateUser(textField.getText(), textField_1.getText(), 
-						//textField_2.getText(), textField_3.getText(), textField_4.getText(), passwordField.getPassword().toString());
+				userController.updateUser(textField.getText(), textField_1.getText(), 
+						textField_2.getText(), textField_3.getText(), (Date) textField_4.getValue(), "password");
+				System.out.println( (Date) textField_4.getValue());
+				JOptionPane.showMessageDialog(null, "Profile is updated successfully!","Success",
+                        JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		btnSave.setBounds(10, 179, 89, 23);
