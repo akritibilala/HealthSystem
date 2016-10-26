@@ -16,7 +16,7 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Home extends JFrame {
+public class PatientHome extends JFrame {
 
 	private JPanel contentPane;
 
@@ -27,7 +27,7 @@ public class Home extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Home frame = new Home();
+					PatientHome frame = new PatientHome();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +39,7 @@ public class Home extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Home() {
+	public PatientHome() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -78,7 +78,7 @@ public class Home extends JFrame {
 		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new HealthIndicator().setVisible(true);
+				new HealthIndicatorPanel().setVisible(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
@@ -105,7 +105,7 @@ public class Home extends JFrame {
 		btnNewButton_4.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Diagnosis().setVisible(true);
+				new DiagnosisPanel().setVisible(true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
@@ -118,7 +118,7 @@ public class Home extends JFrame {
 		JButton btnRecord = new JButton("Record");
 		btnRecord.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Record().setVisible(true);
+				new RecordUserPanel().setVisible(true);
 			}
 		});
 		btnRecord.setHorizontalAlignment(SwingConstants.LEFT);

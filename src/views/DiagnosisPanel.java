@@ -24,7 +24,7 @@ import controller.DiseaseController;
 import model.Disease;
 import java.awt.GridLayout;
 
-public class Diagnosis extends JFrame {
+public class DiagnosisPanel extends JFrame {
 
 	private JPanel contentPane;
 	List<Disease> currentDiseaseList;
@@ -36,7 +36,7 @@ public class Diagnosis extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Diagnosis frame = new Diagnosis();
+					DiagnosisPanel frame = new DiagnosisPanel();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +48,7 @@ public class Diagnosis extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Diagnosis() {
+	public DiagnosisPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		populateDiagnosis();

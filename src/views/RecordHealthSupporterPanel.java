@@ -23,10 +23,13 @@ import javax.swing.border.EmptyBorder;
 
 import controller.ObservationController;
 import controller.RecordController;
+import controller.UserController;
+import model.Authorization;
+import model.HealthSupporter;
 import model.HealthSystemUser;
 import model.Observation;
 
-public class Record extends JFrame {
+public class RecordHealthSupporterPanel extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtValue;
@@ -39,7 +42,7 @@ public class Record extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Record frame = new Record();
+					RecordHealthSupporterPanel frame = new RecordHealthSupporterPanel();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,46 +54,70 @@ public class Record extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Record() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public RecordHealthSupporterPanel() {
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JLabel lblObservationType = new JLabel("Obesrvation Type");
+		
+		
+		JLabel lblPatient = new JLabel("Patient");
+		GridBagConstraints gbc_lblPatient = new GridBagConstraints();
+		gbc_lblPatient.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPatient.gridx = 1;
+		gbc_lblPatient.gridy = 1;
+		contentPane.add(lblPatient, gbc_lblPatient);
+		
+		UserController userCont = new UserController();
+		List<Authorization> authList = userCont.getPatientsUnderHealthSupporter((HealthSupporter)Main.currentUser);
+		
+		JComboBox<String> cmbxPatient = new JComboBox<String>();
+		for(Authorization obs : authList)
+		{
+			cmbxPatient.addItem(obs.getPatient().getId());
+		}
+		GridBagConstraints gbc_cmbxPatient = new GridBagConstraints();
+		gbc_cmbxPatient.insets = new Insets(0, 0, 5, 0);
+		gbc_cmbxPatient.anchor = GridBagConstraints.WEST;
+		gbc_cmbxPatient.gridx = 3;
+		gbc_cmbxPatient.gridy = 1;
+		contentPane.add(cmbxPatient, gbc_cmbxPatient);
+		
+		JLabel lblObservationType = new JLabel("Observation Type");
 		GridBagConstraints gbc_lblObservationType = new GridBagConstraints();
 		gbc_lblObservationType.insets = new Insets(0, 0, 5, 5);
 		gbc_lblObservationType.gridx = 1;
-		gbc_lblObservationType.gridy = 1;
+		gbc_lblObservationType.gridy = 2;
 		contentPane.add(lblObservationType, gbc_lblObservationType);
+		
+		JComboBox<String> cmbxObsType = new JComboBox<String>();
 		
 		ObservationController obsCont = new ObservationController();
 		List<Observation> obsList = obsCont.getObservationList();
-		
-		JComboBox<String> cmbxObsType = new JComboBox<String>();
 		for(Observation obs : obsList)
 		{
 			cmbxObsType.addItem(obs.getType());
 		}
+		
 		GridBagConstraints gbc_cmbxObsType = new GridBagConstraints();
 		gbc_cmbxObsType.insets = new Insets(0, 0, 5, 0);
 		gbc_cmbxObsType.anchor = GridBagConstraints.WEST;
 		gbc_cmbxObsType.gridx = 3;
-		gbc_cmbxObsType.gridy = 1;
+		gbc_cmbxObsType.gridy = 2;
 		contentPane.add(cmbxObsType, gbc_cmbxObsType);
 		
 		JLabel lblValue = new JLabel("Value");
 		GridBagConstraints gbc_lblValue = new GridBagConstraints();
 		gbc_lblValue.insets = new Insets(0, 0, 5, 5);
 		gbc_lblValue.gridx = 1;
-		gbc_lblValue.gridy = 2;
+		gbc_lblValue.gridy = 3;
 		contentPane.add(lblValue, gbc_lblValue);
 		
 		txtValue = new JTextField();
@@ -98,7 +125,7 @@ public class Record extends JFrame {
 		gbc_txtValue.insets = new Insets(0, 0, 5, 0);
 		gbc_txtValue.anchor = GridBagConstraints.WEST;
 		gbc_txtValue.gridx = 3;
-		gbc_txtValue.gridy = 2;
+		gbc_txtValue.gridy = 3;
 		contentPane.add(txtValue, gbc_txtValue);
 		txtValue.setColumns(10);
 		
@@ -106,7 +133,7 @@ public class Record extends JFrame {
 		GridBagConstraints gbc_lblDateOfObservation = new GridBagConstraints();
 		gbc_lblDateOfObservation.insets = new Insets(0, 0, 5, 5);
 		gbc_lblDateOfObservation.gridx = 1;
-		gbc_lblDateOfObservation.gridy = 3;
+		gbc_lblDateOfObservation.gridy = 4;
 		contentPane.add(lblDateOfObservation, gbc_lblDateOfObservation);
 		
 		txtDateOfObs = new JTextField();
@@ -114,7 +141,7 @@ public class Record extends JFrame {
 		gbc_txtDateOfObs.insets = new Insets(0, 0, 5, 0);
 		gbc_txtDateOfObs.anchor = GridBagConstraints.WEST;
 		gbc_txtDateOfObs.gridx = 3;
-		gbc_txtDateOfObs.gridy = 3;
+		gbc_txtDateOfObs.gridy = 4;
 		contentPane.add(txtDateOfObs, gbc_txtDateOfObs);
 		txtDateOfObs.setColumns(10);
 		
@@ -123,6 +150,7 @@ public class Record extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index = cmbxObsType.getSelectedIndex();
 				Observation observation = obsList.get(index);
+				HealthSystemUser patient = authList.get(index).getPatient();
 				String value = txtValue.getText();
 				String date = txtDateOfObs.getText();
 				
@@ -136,7 +164,7 @@ public class Record extends JFrame {
 	        	RecordController record = new RecordController();
 	        	Main.currentUser = new HealthSystemUser();
 	        	Main.currentUser.setId("P1");
-				int count = record.insertRecord(Main.currentUser,observation, value, sql_temp,recordingTime);
+				int count = record.insertRecord(patient,Main.currentUser,observation, value, sql_temp,recordingTime);
 				if(count == 1)
 						JOptionPane.showMessageDialog(null, "Observation Record added successfully!","Add Record",JOptionPane.INFORMATION_MESSAGE);
 				else
@@ -148,9 +176,9 @@ public class Record extends JFrame {
 			}
 		});
 		GridBagConstraints gbc_btnAddObservation = new GridBagConstraints();
-		gbc_btnAddObservation.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAddObservation.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAddObservation.gridx = 1;
-		gbc_btnAddObservation.gridy = 5;
+		gbc_btnAddObservation.gridy = 6;
 		contentPane.add(btnAddObservation, gbc_btnAddObservation);
 	}
 
