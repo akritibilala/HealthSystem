@@ -13,10 +13,10 @@ import javax.swing.border.EmptyBorder;
 
 import model.HealthSystemUser;
 
-public class Profile extends JFrame {
+public class ProfilePanel extends JFrame {
 
 	private JPanel contentPane;
-	private HealthSystemUser user = Main.currentUser;
+	private HealthSystemUser user;
 
 	/**
 	 * Launch the application.
@@ -25,7 +25,7 @@ public class Profile extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Profile frame = new Profile();
+					ProfilePanel frame = new ProfilePanel(Main.currentUser);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,9 +37,9 @@ public class Profile extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Profile() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public ProfilePanel(HealthSystemUser user) {
 		setBounds(100, 100, 450, 300);
+		this.user = user;
 		populateProfile();
 	}
 
@@ -101,11 +101,15 @@ public class Profile extends JFrame {
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD:src/views/Profile.java
 				try {
 					new EditProfile().setVisible(true);
 				} catch (ParseException e1) {
 					e1.printStackTrace();
 				}
+=======
+				new EditProfile(Main.currentUser).setVisible(true);
+>>>>>>> 6391da19ee0e990ce6f1b578ee619f9f5ff44fb9:src/views/ProfilePanel.java
 			}
 		});
 		btnEdit.setBounds(13, 181, 89, 23);

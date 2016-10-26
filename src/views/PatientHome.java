@@ -68,7 +68,7 @@ public class PatientHome extends JFrame {
 		JButton btnNewButton_1 = new JButton("Profile");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Profile().setVisible(true);
+				new ProfilePanel(Main.currentUser).setVisible(true);
 			}
 		});
 		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);

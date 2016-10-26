@@ -66,6 +66,11 @@ public class HealthSupporterHome extends JFrame {
 		contentPane.add(btnNewButton, gbc_btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Profile");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ProfilePanel(Main.currentUser).setVisible(true);;
+			}
+		});
 		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;

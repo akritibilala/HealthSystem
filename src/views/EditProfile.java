@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -28,9 +27,9 @@ public class EditProfile extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JFormattedTextField textField_4;
-	private HealthSystemUser user = Main.currentUser;
-	private JLabel lblPassword;
-	private JPasswordField passwordField;
+	private HealthSystemUser user;
+	/*private JLabel lblPassword;
+	private JPasswordField passwordField;*/
 
 	/**
 	 * Launch the application.
@@ -39,7 +38,7 @@ public class EditProfile extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EditProfile frame = new EditProfile();
+					EditProfile frame = new EditProfile(Main.currentUser);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,8 +51,9 @@ public class EditProfile extends JFrame {
 	 * Create the frame.
 	 * @throws ParseException 
 	 */
-	public EditProfile() throws ParseException {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	public EditProfile(HealthSystemUser user) {
+		this.user = user;
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

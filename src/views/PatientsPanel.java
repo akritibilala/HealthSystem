@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import controller.UserController;
 import model.Authorization;
 import model.HealthSupporter;
+import model.HealthSystemUser;
 import model.Observation;
 import model.Recommendation;
 import java.awt.BorderLayout;
@@ -24,6 +25,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PatientsPanel extends JFrame {
 
@@ -62,6 +65,7 @@ public class PatientsPanel extends JFrame {
 		cmbxPatients = new JComboBox();
 		
 		btnViewDetails = new JButton("View Details");
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -91,7 +95,6 @@ public class PatientsPanel extends JFrame {
 		
 		UserController controller = new UserController();
 		List<Authorization> authList = controller.getPatientsUnderHealthSupporter((HealthSupporter)Main.currentUser);
-		{
 			Object columnNames[] = { "Patient Id", "Patient Name", "Authorization Date", "Type"};
 			Object rowData[][] = new Object[authList.size()][];
 			int i = 0;
@@ -108,9 +111,16 @@ public class PatientsPanel extends JFrame {
 			
 			table = new JTable(rowData, columnNames);
 			scrollPane.setViewportView(table);
-		}
 		
 		contentPane.setLayout(gl_contentPane);
+		
+		btnViewDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = cmbxPatients.getSelectedIndex();
+				HealthSystemUser patient = authList.get(index).getPatient();
+				new ProfilePanel(patient).setVisible(true);
+			}
+		});
 		
 		
 		
