@@ -25,18 +25,18 @@ public class TestMain {
 //		Map<String,Recommendation> rec = user.getRecommendations(u);
 //		printMap(rec);
 //		System.out.println(user.getDiagnoses(u));
-		Disease disease = new Disease();
-		disease.setDiseaseId(1);
-		disease.setName("HIV");
-		java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-//		user.setDiagnoses(u, disease, date);
-//		System.out.println(user.login("P1", "password"));
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        Date parsed = format.parse("20161021");
-        java.sql.Date sql = new java.sql.Date(parsed.getTime());
-//		user.updateUser("P5", "Omkara", "Mumbai", "MALE", sql, "password");
-		
-		user.addAUserAsHealthSupporter(u4, u1, "PRIMARY", sql);
+//		Disease disease = new Disease();
+//		disease.setDiseaseId(1);
+//		disease.setName("HIV");
+//		java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+////		user.setDiagnoses(u, disease, date);
+////		System.out.println(user.login("P1", "password"));
+//		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+//        Date parsed = format.parse("20161021");
+//        java.sql.Date sql = new java.sql.Date(parsed.getTime());
+////		user.updateUser("P5", "Omkara", "Mumbai", "MALE", sql, "password");
+//		
+//		user.addAUserAsHealthSupporter(u4, u1, "PRIMARY", sql);
 		
 //		HealthSystemUser u = new HealthSystemUser();
 //		HealthSystemUser v = new HealthSystemUser();
@@ -56,6 +56,11 @@ public class TestMain {
 //		record.insertRecord(2,u,v, o, 195, sql_temp,sql_temp);
 		
 //		System.out.println(user.getHealthSupporters(u));
+		HealthSystemUser us1 = new HealthSystemUser();
+		HealthSupporter u2 = new HealthSupporter();
+		u2.setId("P2");
+		
+		user.getHealthSupportersAuthorizations(u2);
 		
 		try {
 //			user.setDiagnoses(u, disease, date);

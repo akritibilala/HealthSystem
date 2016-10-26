@@ -12,6 +12,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import controller.UserController;
+import model.HealthSupporter;
 import model.HealthSystemUser;
 
 import com.jgoodies.forms.layout.FormSpecs;
@@ -21,6 +22,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+import javax.swing.JCheckBox;
 
 public class Main {
 
@@ -58,7 +60,7 @@ public class Main {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 486, 269);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
@@ -69,6 +71,8 @@ public class Main {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -91,22 +95,37 @@ public class Main {
 		txtUsername.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password");
-		frame.getContentPane().add(lblPassword, "4, 8");
+		frame.getContentPane().add(lblPassword, "4, 6");
+		
+		passwordField = new JPasswordField();
+		passwordField.setColumns(10);
+		frame.getContentPane().add(passwordField, "8, 6, left, default");
+		
+		JCheckBox chkHs = new JCheckBox("Health Supporter?");
+		frame.getContentPane().add(chkHs, "4, 8");
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				UserController userController = new UserController();
 		        currentUser = userController.login(txtUsername.getText(), String.copyValueOf(passwordField.getPassword()));
-//				currentUser = new HealthSystemUser();
-//				currentUser.setId("P1");
-//				currentUser.setName("Omkar");
-                if(currentUser!=null)
+//				Main.currentUser = new HealthSystemUser();
+//				currentUser.setId("P2");
+//				currentUser.setType("Both");
+		        if(currentUser!=null)
+		        if(chkHs.isSelected() && (currentUser.getType().equals("Health Supporter") || currentUser.getType().equals("Both")) )
                 {
-                	new Home().setVisible(true);
-                    System.out.println("yay");
+		        	currentUser = new HealthSupporter(currentUser.getId(),currentUser.getDateOfBirth(),currentUser.getGender(),currentUser.getAddress(),currentUser.getName());
+		        	//Login Health Supporter
+                	new HealthSupporterHome().setVisible(true);
                     frame.dispose();
                 }
+		        else if(!chkHs.isSelected() && (currentUser.getType().equals("Patient") || currentUser.getType().equals("Both")))
+		        {
+		        	//Login Patient
+                	new PatientHome().setVisible(true);
+                    frame.dispose();
+		        }
                 else
                 {
                 	JOptionPane.showMessageDialog(null, "Login failed!","Failed!!",
@@ -116,10 +135,20 @@ public class Main {
 			}
 		});
 		
-		passwordField = new JPasswordField();
-		passwordField.setColumns(10);
-		frame.getContentPane().add(passwordField, "8, 8, left, default");
-		frame.getContentPane().add(btnLogin, "6, 12");
+
+		
+		JLabel lblOr = new JLabel("OR");
+		frame.getContentPane().add(lblOr, "6, 12, center, default");
+		
+		JButton btnSignup = new JButton("Signup");
+		btnSignup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Signup().setVisible(true);
+				frame.dispose();
+			}
+		});
+		frame.getContentPane().add(btnSignup, "6, 14");
+		frame.getContentPane().add(btnLogin, "6, 10");
 	}
 
 }

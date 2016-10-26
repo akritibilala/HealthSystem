@@ -17,7 +17,7 @@ import controller.UserController;
 import model.Observation;
 import model.Recommendation;
 
-public class HealthIndicator extends JFrame {
+public class HealthIndicatorPanel extends JFrame {
 
 	private JPanel contentPane;
 
@@ -28,7 +28,7 @@ public class HealthIndicator extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HealthIndicator frame = new HealthIndicator();
+					HealthIndicatorPanel frame = new HealthIndicatorPanel();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,8 +40,7 @@ public class HealthIndicator extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public HealthIndicator() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public HealthIndicatorPanel() {
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

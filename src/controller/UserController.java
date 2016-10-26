@@ -219,7 +219,7 @@ public class UserController {
 		// SQL statements to the DBMS
 		stmt = conn.createStatement();
 
-		String sql = "SELECT ID,NAME,DOB,GENDER,ADDRESS "
+		String sql = "SELECT ID,NAME,DOB,GENDER,ADDRESS,TYPE "
 				+ "FROM HEALTHSYSTEM_USER "
 				+ "WHERE ID='"+uid+"' "
 				+ "AND PASSWORD='"+password+"'";
@@ -229,7 +229,7 @@ public class UserController {
 			if(rs1.next()) {
 				//Add user details
 				HealthSystemUser user = new HealthSystemUser(rs1.getString("ID"),rs1.getDate("DOB"),rs1.getString("GENDER"),
-																rs1.getString("ADDRESS"),rs1.getString("NAME"));
+																rs1.getString("ADDRESS"),rs1.getString("NAME"),rs1.getString("TYPE"));
 				return user;
 			}
 
@@ -244,7 +244,7 @@ public class UserController {
         return null;
 	}
 	
-	public int insertUser(String id,String name,String address, String gender,Date date, String password)
+	public int insertUser(String id,String name,String address, String gender,Date date, String password,String type)
 	{
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -254,7 +254,7 @@ public class UserController {
 			
 		conn = ConnectionClass.connect();
 		
-		String query = "insert into HEALTHSYSTEM_USER values(?, ?, ?,?,?,?)";
+		String query = "insert into HEALTHSYSTEM_USER values(?, ?, ?,?,?,?,?)";
 
 	    stmt = conn.prepareStatement(query); // create a statement
 	    stmt.setString(1, id); // set input parameter 1
@@ -263,6 +263,7 @@ public class UserController {
 	    stmt.setString(4, gender); // set input parameter 3
 	    stmt.setString(6, password);
 	    stmt.setDate(5, date);
+	    stmt.setString(7, type);
 	    result = stmt.executeUpdate(); // execute insert statement
 			
         } catch(Throwable oops) {
@@ -410,7 +411,7 @@ public class UserController {
 		// SQL statements to the DBMS
 		stmt = conn.createStatement();
 
-		//Special Recommendation
+		//HealthSupporters
 			rs1 = stmt.executeQuery("SELECT h.ID,h.NAME,h.ADDRESS,h.GENDER,h.DOB,a.AUTHORIZATION_DATE,a.HEALTH_SUPPORTER_TYPE "
 				+ "FROM AUTHORIZATION a,HEALTHSYSTEM_USER h "
 				+ "WHERE a.PATIENT_ID='"+user.getId()+"' "
@@ -457,6 +458,71 @@ public class UserController {
             ConnectionClass.close(conn);
         }
         return healthSupporterList;
+	}
+	
+	public List<Authorization> getPatientsUnderHealthSupporter(HealthSupporter supporter)
+	{
+		List<Authorization> patientList = new ArrayList<>();
+		
+        Statement stmt = null;
+        ResultSet rs1 = null;
+        Connection conn = null;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		// Create a statement object that will be sending your
+		// SQL statements to the DBMS
+		stmt = conn.createStatement();
+
+		//Special Recommendation
+			rs1 = stmt.executeQuery("SELECT h.ID,h.NAME,h.ADDRESS,h.GENDER,h.DOB,a.AUTHORIZATION_DATE,a.HEALTH_SUPPORTER_TYPE "
+				+ "FROM AUTHORIZATION a,HEALTHSYSTEM_USER h "
+				+ "WHERE a.HEALTH_SUPPORTER_ID='"+supporter.getId()+"' "
+				+ "AND a.PATIENT_ID = h.ID");
+			
+			while (rs1.next()) {
+				//Add health supporter
+				HealthSystemUser patient = new HealthSystemUser();
+				String id = rs1.getString("ID");
+				if(id!=null)
+					patient.setId(id);
+				String name = rs1.getString("NAME");
+				if(name!=null)
+					patient.setName(name);
+				String address = rs1.getString("ADDRESS");
+				if(address!=null)
+					patient.setAddress(address);
+				String gender = rs1.getString("GENDER");
+				if(gender!=null)
+					patient.setGender(gender);
+				Date date = rs1.getDate("DOB");
+				if(date!=null)
+					patient.setDateOfBirth(date);
+				//Add authorization
+				Authorization auth = new Authorization();
+				auth.setHealthSupporter(supporter);
+				auth.setPatient(patient);
+				Date authDate = rs1.getDate("AUTHORIZATION_DATE");
+				if(authDate!=null)
+					auth.setAuthorizationDate(authDate);
+				String authType = rs1.getString("HEALTH_SUPPORTER_TYPE");
+				if(authType!=null)
+					auth.setHealthSupporterType(authType);
+				
+				patientList.add(auth);
+			}
+
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(rs1);
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+        return patientList;
 	}
 	
 }

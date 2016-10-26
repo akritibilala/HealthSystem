@@ -17,18 +17,21 @@ public class HealthSystemUser {
 	
 	private String name;
 	
+	private String type;
+	
 	Map<Observation,Recommendation> obsRecommendationMap;
 	
 	public HealthSystemUser() {
 	}
 
-	public HealthSystemUser(String id, Date dateOfBirth, String gender, String address,String name) {
+	public HealthSystemUser(String id, Date dateOfBirth, String gender, String address,String name,String type) {
 		super();
 		this.id = id;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
 		this.address = address;
 		this.name = name;
+		this.type = type;
 	}
 
 	public String getId() {
@@ -37,6 +40,14 @@ public class HealthSystemUser {
 
 	public void setId(String userId) {
 		this.id = userId;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type= type;
 	}
 
 	public Date getDateOfBirth() {

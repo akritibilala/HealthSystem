@@ -62,6 +62,10 @@ public class Observation {
 		else
 		return super.equals(obj);
 	}
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
 	
 	@Override
 	public String toString() {
