@@ -169,8 +169,8 @@ public class DiseaseController {
 	    result = stmt.executeUpdate(); // execute insert statement
 			
         } catch(SQLException oops) {
-        	if(oops.getMessage()!=null && oops.getMessage().equals("ORA-00001: unique constraint (GMKHANDE.SICK_PATIENT_PK) violated"))
-            throw new Exception("Patient :"+user.getName()+" has already been diagnosed with that disease!");
+        	oops.printStackTrace();
+            throw new Exception("Error in adding diagnosis to patient : "+user.getName());
         }
 		catch(Throwable t)
 		{

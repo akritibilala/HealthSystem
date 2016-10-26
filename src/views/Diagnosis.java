@@ -51,15 +51,14 @@ public class Diagnosis extends JFrame {
 	public Diagnosis() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		
 		populateDiagnosis();
 		
 	}
 	
 	private void populateDiagnosis() {
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
 		contentPane.setBorder(BorderFactory.createEmptyBorder(10,22,0,0));
 		contentPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -106,7 +105,8 @@ public class Diagnosis extends JFrame {
 	
 	void refreshPanel()
 	{
-		contentPane.removeAll();
+		getContentPane().removeAll();
+//		setContentPane(contentPane);
 		populateDiagnosis();
 		getContentPane().invalidate();
 		getContentPane().repaint();
@@ -134,7 +134,7 @@ public class Diagnosis extends JFrame {
 	                try {
 						int count = controller.deleteDiagnoses(Main.currentUser, diseaseToAdd);
 						if(count == 1)
-							JOptionPane.showMessageDialog(null, "Diagnosis removed successfully!","Remove Diagnosis",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Diagnosis removed successfully!","Remove Diagnosis",JOptionPane.INFORMATION_MESSAGE);
 							refreshPanel();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -170,7 +170,7 @@ public class Diagnosis extends JFrame {
 	                try {
 						int count = controller.setDiagnoses(Main.currentUser, diseaseToAdd, date);
 						if(count == 1)
-							JOptionPane.showMessageDialog(null, "Diagnosis added successfully!","Add Diagnosis",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Diagnosis added successfully!","Add Diagnosis",JOptionPane.INFORMATION_MESSAGE);
 						refreshPanel();
 					} catch (Exception e) {
 						e.printStackTrace();
