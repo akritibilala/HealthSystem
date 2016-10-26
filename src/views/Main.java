@@ -108,10 +108,10 @@ public class Main {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				UserController userController = new UserController();
-//		        currentUser = userController.login(txtUsername.getText(), String.copyValueOf(passwordField.getPassword()));
-				Main.currentUser = new HealthSystemUser();
-				currentUser.setId("P2");
-				currentUser.setType("Both");
+		        currentUser = userController.login(txtUsername.getText(), String.copyValueOf(passwordField.getPassword()));
+//				Main.currentUser = new HealthSystemUser();
+//				currentUser.setId("P2");
+//				currentUser.setType("Both");
 		        if(currentUser!=null)
 		        if(chkHs.isSelected() && (currentUser.getType().equals("Health Supporter") || currentUser.getType().equals("Both")) )
                 {
