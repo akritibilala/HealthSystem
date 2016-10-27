@@ -11,6 +11,20 @@ public class Observation {
 	private String measure;
 	
 	private String metric;
+	
+	public Observation()
+	{
+		
+	}
+	
+	public Observation(Integer id, String type,String description, String measure,String metric)
+	{
+		this.id = id;
+		this.type = type;
+		this.description = description;
+		this.measure = measure;
+		this.metric = metric;
+	}
 
 	public Integer getId() {
 		return id;

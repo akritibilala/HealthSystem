@@ -15,6 +15,27 @@ public class Alert {
 	private Observation obsType;
 	
 	private HealthSystemUser patient;
+	
+	public Alert(String id,String type,String status,String alertMessage,String date,Observation observation)
+	{
+		this.id = id;
+		this.type = type;
+		this.status = status;
+		this.alertMessage = alertMessage;
+		this.date = date;
+		this.obsType = observation;
+	}
+	
+	public Alert(String id,String type,String status,String alertMessage,String date,Observation observation,HealthSystemUser patient)
+	{
+		this.id = id;
+		this.type = type;
+		this.status = status;
+		this.alertMessage = alertMessage;
+		this.date = date;
+		this.obsType = observation;
+		this.patient = patient;
+	}
 
 	public String getId() {
 		return id;

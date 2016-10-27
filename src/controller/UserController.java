@@ -429,7 +429,6 @@ public class UserController {
 			    			("UPDATE HEALTHSYSTEM_USER SET TYPE = 'Both' where TYPE = 'Patient' AND id = ?");
 			    	update.setString(1, supporter.getId());
 			    	update.executeUpdate();
-			    	
 		    }
 		} catch(Throwable oops) {
 			oops.printStackTrace();

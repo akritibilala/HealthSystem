@@ -56,6 +56,7 @@ public class PatientHome extends JFrame {
 		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				new AlertPatientPanel().setVisible(true); 
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
