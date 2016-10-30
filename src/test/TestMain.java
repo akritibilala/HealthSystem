@@ -81,10 +81,10 @@ public class TestMain {
 //			e.printStackTrace();
 //		}
 		
-		HealthSystemUser u = new HealthSystemUser();
-		u.setId("P1");
-		AlertController ac = new AlertController();
-		ac.generateAlert(u);
+//		HealthSystemUser u = new HealthSystemUser();
+//		u.setId("P1");
+//		AlertController ac = new AlertController();
+//		ac.generateAlert(u);
 	}
 	
 	public static void printMap(Map mp) {

@@ -8,9 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,10 +23,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import controller.ObservationController;
 import controller.RecordController;
+import controller.UserController;
 import model.HealthSystemUser;
 import model.Observation;
+import model.Recommendation;
 
 public class RecordUserPanel extends JFrame {
 
@@ -70,13 +73,15 @@ public class RecordUserPanel extends JFrame {
 		gbc_lblObservationType.gridy = 1;
 		contentPane.add(lblObservationType, gbc_lblObservationType);
 		
-		ObservationController obsCont = new ObservationController();
-		List<Observation> obsList = obsCont.getObservationList();
+		UserController obsCont = new UserController();
+		Map<Observation,Recommendation> obsList = obsCont.getRecommendations(Main.currentUser);
 		
 		JComboBox<String> cmbxObsType = new JComboBox<String>();
-		for(Observation obs : obsList)
+		List<Observation> observationList = new ArrayList<Observation>();
+		for(Observation obs : obsList.keySet())
 		{
 			cmbxObsType.addItem(obs.getType());
+			observationList.add(obs);
 		}
 		GridBagConstraints gbc_cmbxObsType = new GridBagConstraints();
 		gbc_cmbxObsType.insets = new Insets(0, 0, 5, 0);
@@ -120,8 +125,8 @@ public class RecordUserPanel extends JFrame {
 		JButton btnAddObservation = new JButton("Add Observation");
 		btnAddObservation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int index = cmbxObsType.getSelectedIndex();
-				Observation observation = obsList.get(index);
+				int selectedIndex = cmbxObsType.getSelectedIndex();
+				Observation observation = observationList.get(selectedIndex);
 				String value = txtValue.getText();
 				String date = txtDateOfObs.getText();
 				

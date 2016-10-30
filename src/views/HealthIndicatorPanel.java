@@ -73,7 +73,7 @@ public class HealthIndicatorPanel extends JFrame {
 		recoMap = controller.getRecommendations(Main.currentUser);
 //		if(recoMap.size() > 0)
 //		{
-			Object columnNames[] = { "Observation", "Upper Limit", "Lower Limit", "Text", "Frequency" };
+			Object columnNames[] = { "Observation", "Upper Limit", "Lower Limit", "Text", "Frequency","Alert Percenatge Threshold", "Alert Observation Threshold", "Alert Frequency Threshold" };
 			Object rowData[][] = new Object[recoMap.size()][];
 //			Object columnNames[] = { "Column One", "Column Two", "Column Three" };
 //			Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3" },
@@ -109,7 +109,6 @@ public class HealthIndicatorPanel extends JFrame {
 				rowData[i][6] = "N/A";
 				rowData[i][7] = "N/A";
 				}
-				i++;
 				i++;
 				observationList.add(entry.getKey());
 				cmbxObs.addItem(entry.getKey().getType());

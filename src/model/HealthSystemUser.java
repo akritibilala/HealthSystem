@@ -102,5 +102,16 @@ public class HealthSystemUser {
 	public String toString() {
 		return "[NAME ="+name+" ADDRESS = "+address+" GENDER = "+gender+" DOB = "+dateOfBirth+"]";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Observation)
+		{
+			HealthSystemUser user = (HealthSystemUser) obj;
+			return this.getId().equals(user.getId());
+		}
+		else
+		return super.equals(obj);
+	}
 
 }

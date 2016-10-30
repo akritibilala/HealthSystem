@@ -64,11 +64,27 @@ public class AlertPatientPanel extends JFrame {
 			}
 		});
 		
+		AlertController controller = new AlertController();
+		List<Alert> alertList = controller.getAllAlerts(Main.currentUser);
+		Object columnNames[] = { "Alert Id", "Alert Type", "Alert Message", "Alert Date","Observation"};
+		Object rowData[][] = new Object[alertList.size()][];
+		int i = 0;
+		for(Alert auth: alertList)
+		{
+			rowData[i] = new Object[columnNames.length];
+			rowData[i][0] = auth.getId();
+			rowData[i][1] = auth.getType();
+			rowData[i][2] = auth.getAlertMessage();
+			rowData[i][3] = auth.getDate();
+			rowData[i][4] = auth.getObsType().getType();
+			i++;
+		}	
+		
 		JButton btnGenerateAlerts = new JButton("Generate Alerts");
 		btnGenerateAlerts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AlertController ac = new AlertController();
-				List<Alert> alerts = ac.generateAlert(Main.currentUser);
+				List<Alert> alerts = ac.generateAlert(Main.currentUser,alertList);
 				for(Alert alert : alerts)
 				{
 					ac.insertAlert(alert);
@@ -100,22 +116,6 @@ public class AlertPatientPanel extends JFrame {
 						.addComponent(btnGenerateAlerts))
 					.addGap(23))
 		);
-		
-		AlertController controller = new AlertController();
-		List<Alert> alertList = controller.getAllAlerts(Main.currentUser);
-		Object columnNames[] = { "Alert Id", "Alert Type", "Alert Message", "Alert Date","Observation"};
-		Object rowData[][] = new Object[alertList.size()][];
-		int i = 0;
-		for(Alert auth: alertList)
-		{
-			rowData[i] = new Object[columnNames.length];
-			rowData[i][0] = auth.getId();
-			rowData[i][1] = auth.getType();
-			rowData[i][2] = auth.getAlertMessage();
-			rowData[i][3] = auth.getDate();
-			rowData[i][4] = auth.getObsType().getType();
-			i++;
-		}	
 		
 		table = new JTable(rowData,columnNames);
 		scrollPane.setViewportView(table);

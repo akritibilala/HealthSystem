@@ -70,19 +70,6 @@ public class AlertPatientHealthSupporterPanel extends JFrame {
 			}
 		});
 		
-		JButton btnGenerateAlerts = new JButton("Generate Alerts");
-		btnGenerateAlerts.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AlertController ac = new AlertController();
-				List<Alert> alerts = ac.generateAlertForHealthSupporter(Main.currentUser);
-				for(Alert alert : alerts)
-				{
-					ac.insertAlert(alert);
-				}
-				refreshPanel();
-			}
-		});
-		
 		AlertController controller = new AlertController();
 		List<Alert> alertList = controller.getAllAlertsForHealthSupporter(Main.currentUser);
 		Object columnNames[] = { "Alert Id", "Patient", "Alert Type", "Alert Message", "Alert Date","Observation"};
@@ -99,6 +86,21 @@ public class AlertPatientHealthSupporterPanel extends JFrame {
 			rowData[i][5] = auth.getObsType().getType();
 			i++;
 		}	
+		
+		JButton btnGenerateAlerts = new JButton("Generate Alerts");
+		btnGenerateAlerts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AlertController ac = new AlertController();
+				List<Alert> alerts = ac.generateAlertForHealthSupporter(Main.currentUser,alertList);
+				for(Alert alert : alerts)
+				{
+					ac.insertAlert(alert);
+				}
+				refreshPanel();
+			}
+		});
+		
+		
 		
 		JComboBox cmbxAlerts = new JComboBox();
 	    for(Alert alert: alertList)

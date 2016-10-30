@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,7 +87,7 @@ public class AlertController {
 		return result;
 	}
 	
-	public List<Alert> generateAlert(HealthSystemUser user)
+	public List<Alert> generateAlert(HealthSystemUser user, List<Alert> currentAlertList)
 	{
 		List<Alert> alertList = new ArrayList<Alert>();
 		try
@@ -96,7 +97,25 @@ public class AlertController {
 			obsMap=uc.getRecommendations(user);
 			for(Map.Entry<Observation, Recommendation> obsRecoValue : obsMap.entrySet())
 			{
+				Date minDate = null;
 				Observation observation = obsRecoValue.getKey();
+				for(Alert alert : currentAlertList)
+				{
+					if(alert.getObsType().equals(observation)&&alert.getPatient().getId().equals(user.getId()))
+					{
+						minDate = alert.getDate();
+						break;
+					}
+				}
+				String dateString = "";
+				if(minDate == null )
+					dateString = "01-JAN-1500";
+				else
+				{
+					DateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+					dateString = df.format(minDate).toUpperCase();
+				}
+				
 				Recommendation recomendation = obsRecoValue.getValue();
 				AlertPatientInfo alertPatientInfo= getAlertPatientInfo(user,observation);
 				
@@ -110,7 +129,7 @@ public class AlertController {
 					try
 					{
 						conn = ConnectionClass.connect();
-						String query = "Select * from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND ROWNUM = 1 ORDER BY OBS_DATE_TIME";
+						String query = "Select * from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND REC_DATE_TIME > to_date('"+dateString+"') AND ROWNUM = 1 ORDER BY OBS_DATE_TIME DESC";
 						stmt = conn.createStatement(); 
 						rs=stmt.executeQuery(query);
 						if(rs.next())
@@ -160,7 +179,7 @@ public class AlertController {
 						try
 						{
 							conn = ConnectionClass.connect();
-							String query = "Select * from (Select * from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" ORDER BY OBS_DATE_TIME DESC) WHERE ROWNUM <= "+alertObservationThresold;
+							String query = "Select * from (Select * from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND REC_DATE_TIME>'"+dateString+"' ORDER BY OBS_DATE_TIME DESC) WHERE ROWNUM <= "+alertObservationThresold;
 							stmt = conn.createStatement(); 
 							rs=stmt.executeQuery(query);
 							int count = 0;
@@ -312,7 +331,7 @@ public class AlertController {
 		//Alert
 		rs1 = stmt.executeQuery("SELECT a.ALERT_ID,a.ALERT_TYPE,a.ALERT_STATUS,a.ALERT_MESSAGE,a.ALERT_DATE,"
 				+" o.OBSERVATION_ID, o.OBSERVATION_TYPE, o.MEASURE, o. METRIC, o.DESCRIPTION "
-			+ "FROM ALERT a, OBSERVATION o where a.ALERT_STATUS = 'ACTIVE' and a.OBSERVATION_ID=o.OBSERVATION_ID and a.PATIENT_ID = '"+user.getId()+"'");
+			+ "FROM ALERT a, OBSERVATION o where a.ALERT_STATUS = 'ACTIVE' and a.OBSERVATION_ID=o.OBSERVATION_ID and a.PATIENT_ID = '"+user.getId()+"' ORDER BY a.ALERT_ID DESC");
 		
 		while (rs1.next()) {
 			//Add disease
@@ -354,7 +373,7 @@ public class AlertController {
 					+" o.OBSERVATION_ID, o.OBSERVATION_TYPE, o.MEASURE, o. METRIC, o.DESCRIPTION, "
 					+" h.NAME, h.ID, h.ADDRESS, h.GENDER, h.DOB, h.PASSWORD, h.TYPE "
 				+ "FROM ALERT a, OBSERVATION o, HEALTHSYSTEM_USER h where a.PATIENT_ID = h.ID and a.ALERT_STATUS = 'ACTIVE' and a.ALERT_SEEN = 'false' and a.OBSERVATION_ID=o.OBSERVATION_ID and a.PATIENT_ID IN "
-				+ "(Select PATIENT_ID from AUTHORIZATION where HEALTH_SUPPORTER_ID = '"+user.getId()+"')");
+				+ "(Select PATIENT_ID from AUTHORIZATION where HEALTH_SUPPORTER_ID = '"+user.getId()+"') ORDER BY a.ALERT_ID DESC");
 			
 			while (rs1.next()) {
 				//Add disease
@@ -468,13 +487,13 @@ public class AlertController {
 		return alertPatientInfo;
 	}
 	
-	public List<Alert> generateAlertForHealthSupporter(HealthSystemUser currentUser) {
+	public List<Alert> generateAlertForHealthSupporter(HealthSystemUser currentUser,List<Alert> currentAlertList) {
 		UserController controller = new UserController();
 		List<Alert> alerts = new ArrayList<Alert>();	
 		List<Authorization> users = controller.getPatientsUnderHealthSupporter((HealthSupporter)Main.currentUser);
 		for(Authorization authorization : users)
 		{
-			List<Alert> alertPatient = generateAlert(authorization.getPatient());
+			List<Alert> alertPatient = generateAlert(authorization.getPatient(),currentAlertList);
 			alerts.addAll(alertPatient);
 		}
 		return alerts;
