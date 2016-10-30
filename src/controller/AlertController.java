@@ -16,9 +16,12 @@ import java.util.Set;
 import Utility.ConnectionClass;
 import model.Alert;
 import model.AlertPatientInfo;
+import model.Authorization;
+import model.HealthSupporter;
 import model.HealthSystemUser;
 import model.Observation;
 import model.Recommendation;
+import views.Main;
  
 
 public class AlertController {
@@ -93,48 +96,52 @@ public class AlertController {
 			for(Map.Entry<Observation, Recommendation> obsRecoValue : obsMap.entrySet())
 			{
 				Observation observation = obsRecoValue.getKey();
-				//TODO Temporary
-				observation.setId(5);
 				Recommendation recomendation = obsRecoValue.getValue();
-				recomendation.setUpperLimit(180.0);
-				recomendation.setLowerLimit(120.0);
 				AlertPatientInfo alertPatientInfo= getAlertPatientInfo(user,observation);
 				
 				//Low Frequency
-//				Integer frequency = recomendation.getFrequency();
-//				if(frequency>0)
-//				{
-//					Connection conn = null;
-//					Statement stmt = null;
-//					ResultSet rs = null;
-//					try
-//					{
-//						conn = ConnectionClass.connect();
-//						String query = "Select * from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND ROWNUM = 1 ORDER BY OBS_DATE_TIME";
-//						stmt = conn.createStatement(); 
-//						rs=stmt.executeQuery(query);
-//						if(rs.next())
-//						{
-//							Date date = rs.getDate("OBS_DATE_TIME");
-//							java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-//							int difference = (int)((currentDate.getTime() - date.getTime()) / MILLISECONDS_IN_DAY);
-//							int alertFrequencyThresold = alertPatientInfo.getAlertFrequencyThreshold();
-//							if(difference>(frequency+alertFrequencyThresold))
-//								System.out.println("LOW FREQUENCY ALERT !!!!");
-//						}
-//					}
-//					catch(Exception e1)
-//					{
-//					e1.printStackTrace();
-//					}
-//					finally
-//					{
-//						ConnectionClass.close(conn);
-//						ConnectionClass.close(stmt);
-//						ConnectionClass.close(rs);
-//					}
-//					
-//				}
+				Integer frequency = recomendation.getFrequency();
+				if(frequency>0)
+				{
+					Connection conn = null;
+					Statement stmt = null;
+					ResultSet rs = null;
+					try
+					{
+						conn = ConnectionClass.connect();
+						String query = "Select * from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND ROWNUM = 1 ORDER BY OBS_DATE_TIME";
+						stmt = conn.createStatement(); 
+						rs=stmt.executeQuery(query);
+						if(rs.next())
+						{
+							Date date = rs.getDate("OBS_DATE_TIME");
+							java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+							int difference = (int)((currentDate.getTime() - date.getTime()) / MILLISECONDS_IN_DAY);
+							int alertFrequencyThresold = alertPatientInfo.getAlertFrequencyThreshold();
+							if(difference>(frequency+alertFrequencyThresold))
+							{
+								Alert alert = new Alert();
+								alert.setAlertMessage(difference+" days since the last recording. Please use the system!!!!!");
+								alert.setDate(currentDate);
+								alert.setObsType(observation);
+								alert.setPatient(user);
+								alert.setStatus("ACTIVE");
+								alert.setType("low-activity");
+							}
+						}
+					}
+					catch(Exception e1)
+					{
+					e1.printStackTrace();
+					}
+					finally
+					{
+						ConnectionClass.close(conn);
+						ConnectionClass.close(stmt);
+						ConnectionClass.close(rs);
+					}
+					
+				}
 				
 				//Outside the limit
 				Double upperLimit = recomendation.getUpperLimit();
@@ -166,7 +173,16 @@ public class AlertController {
 						{
 							Double percentage = (double) count*100/totalCount;
 							if(percentage>alertPercentageThreshold)
-								System.out.println("OUTSIDE THE LIMIT ALERT!!");
+							{
+								Alert alert = new Alert();
+								alert.setAlertMessage(percentage+"% number of recordings are outside the limit");
+								java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+								alert.setDate(date);
+								alert.setObsType(observation);
+								alert.setPatient(user);
+								alert.setStatus("ACTIVE");
+								alert.setType("outside-the-limit");
+							}
 						}
 					}
 					catch(Exception e1)
@@ -302,7 +318,7 @@ public class AlertController {
 		while (rs1.next()) {
 			//Add disease
 			Observation observation = new Observation(rs1.getInt("OBSERVATION_ID"), rs1.getString("OBSERVATION_TYPE"),rs1.getString("DESCRIPTION"),rs1.getString("MEASURE"), rs1.getString("METRIC"));
-			Alert alert = new Alert(rs1.getString("ALERT_ID"),rs1.getString("ALERT_TYPE"),rs1.getString("ALERT_STATUS"),rs1.getString("ALERT_MESSAGE"),rs1.getString("ALERT_DATE"),observation);
+			Alert alert = new Alert(rs1.getString("ALERT_ID"),rs1.getString("ALERT_TYPE"),rs1.getString("ALERT_STATUS"),rs1.getString("ALERT_MESSAGE"),rs1.getDate("ALERT_DATE"),observation);
 			alertList.add(alert);
 		}
 
@@ -345,7 +361,7 @@ public class AlertController {
 				//Add disease
 				Observation observation = new Observation(rs1.getInt("OBSERVATION_ID"), rs1.getString("OBSERVATION_TYPE"),rs1.getString("DESCRIPTION"),rs1.getString("MEASURE"), rs1.getString("METRIC"));
 				HealthSystemUser patient = new HealthSystemUser(rs1.getString("ID"), rs1.getDate("DOB"), rs1.getString("GENDER"), rs1.getString("ADDRESS"), rs1.getString("NAME"), rs1.getString("TYPE"));
-				Alert alert = new Alert(rs1.getString("ALERT_ID"),rs1.getString("ALERT_TYPE"),rs1.getString("ALERT_STATUS"),rs1.getString("ALERT_MESSAGE"),rs1.getString("ALERT_DATE"),observation,patient);
+				Alert alert = new Alert(rs1.getString("ALERT_ID"),rs1.getString("ALERT_TYPE"),rs1.getString("ALERT_STATUS"),rs1.getString("ALERT_MESSAGE"),rs1.getDate("ALERT_DATE"),observation,patient);
 				alertList.add(alert);
 			}
 
@@ -451,6 +467,15 @@ public class AlertController {
             ConnectionClass.close(conn);
         }
 		return alertPatientInfo;
+	}
+	
+	public List<Alert> generateAlertForHealthSupporter(HealthSystemUser currentUser) {
+		UserController controller = new UserController();
+		List<Authorization> users = controller.getPatientsUnderHealthSupporter((HealthSupporter)Main.currentUser);
+		for(Authorization authorization : users)
+		{
+			
+		}
 	}
 	
 //	void alertSeen(Alert alert)

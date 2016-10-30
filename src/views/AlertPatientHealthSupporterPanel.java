@@ -12,14 +12,18 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
 import controller.AlertController;
+import controller.UserController;
 import model.Alert;
 import model.Authorization;
+import model.HealthSupporter;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JComboBox;
 
-public class AlertPatientPanel extends JFrame {
+public class AlertPatientHealthSupporterPanel extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -32,7 +36,7 @@ public class AlertPatientPanel extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AlertPatientPanel frame = new AlertPatientPanel();
+					AlertPatientHealthSupporterPanel frame = new AlertPatientHealthSupporterPanel();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +48,7 @@ public class AlertPatientPanel extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AlertPatientPanel() {
+	public AlertPatientHealthSupporterPanel() {
 		setBounds(100, 100, 623, 324);
 		contentPane = new JPanel();
 		populateAlerts();
@@ -68,7 +72,7 @@ public class AlertPatientPanel extends JFrame {
 		btnGenerateAlerts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AlertController ac = new AlertController();
-				List<Alert> alerts = ac.generateAlert(Main.currentUser);
+				List<Alert> alerts = ac.generateAlertForHealthSupporter(Main.currentUser);
 				for(Alert alert : alerts)
 				{
 					ac.insertAlert(alert);
@@ -76,16 +80,24 @@ public class AlertPatientPanel extends JFrame {
 				populateAlerts();
 			}
 		});
+		
+		JComboBox cmbxAlerts = new JComboBox();
+		
+		JButton btnClearAlerts = new JButton("Clear Alerts");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnGenerateAlerts)
-							.addPreferredGap(ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
+							.addGap(59)
+							.addComponent(cmbxAlerts, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnClearAlerts)
+							.addPreferredGap(ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
 							.addComponent(btnAddObservation)))
 					.addContainerGap())
 		);
@@ -97,23 +109,26 @@ public class AlertPatientPanel extends JFrame {
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnAddObservation)
-						.addComponent(btnGenerateAlerts))
+						.addComponent(btnGenerateAlerts)
+						.addComponent(cmbxAlerts, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnClearAlerts))
 					.addContainerGap(23, Short.MAX_VALUE))
 		);
 		
 		AlertController controller = new AlertController();
-		List<Alert> alertList = controller.getAllAlerts(Main.currentUser);
-		Object columnNames[] = { "Alert Id", "Alert Type", "Alert Message", "Alert Date","Observation"};
+		List<Alert> alertList = controller.getAllAlertsForHealthSupporter(Main.currentUser);
+		Object columnNames[] = { "Alert Id", "Patient", "Alert Type", "Alert Message", "Alert Date","Observation"};
 		Object rowData[][] = new Object[alertList.size()][];
 		int i = 0;
 		for(Alert auth: alertList)
 		{
 			rowData[i] = new Object[columnNames.length];
 			rowData[i][0] = auth.getId();
-			rowData[i][1] = auth.getType();
-			rowData[i][2] = auth.getAlertMessage();
-			rowData[i][3] = auth.getDate();
-			rowData[i][4] = auth.getObsType().getType();
+			rowData[i][1] = auth.getPatient().getId();
+			rowData[i][2] = auth.getType();
+			rowData[i][3] = auth.getAlertMessage();
+			rowData[i][4] = auth.getDate();
+			rowData[i][5] = auth.getObsType().getType();
 			i++;
 		}	
 		

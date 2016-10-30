@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Date;
+
 public class Alert {
 		
 	private String id;
@@ -10,13 +12,13 @@ public class Alert {
 	
 	private String alertMessage;
 	
-	private String date;
+	private Date date;
 	
 	private Observation obsType;
 	
 	private HealthSystemUser patient;
 	
-	public Alert(String id,String type,String status,String alertMessage,String date,Observation observation)
+	public Alert(String id,String type,String status,String alertMessage,Date date,Observation observation)
 	{
 		this.id = id;
 		this.type = type;
@@ -26,7 +28,7 @@ public class Alert {
 		this.obsType = observation;
 	}
 	
-	public Alert(String id,String type,String status,String alertMessage,String date,Observation observation,HealthSystemUser patient)
+	public Alert(String id,String type,String status,String alertMessage,Date date,Observation observation,HealthSystemUser patient)
 	{
 		this.id = id;
 		this.type = type;
@@ -35,6 +37,10 @@ public class Alert {
 		this.date = date;
 		this.obsType = observation;
 		this.patient = patient;
+	}
+
+	public Alert() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getId() {
@@ -69,11 +75,11 @@ public class Alert {
 		this.alertMessage = alertMessage;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
