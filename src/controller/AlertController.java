@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +15,15 @@ import java.util.Set;
 
 import Utility.ConnectionClass;
 import model.Alert;
-import model.Disease;
+import model.AlertPatientInfo;
 import model.HealthSystemUser;
 import model.Observation;
 import model.Recommendation;
  
 
 public class AlertController {
+	private static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
+
 	public Map<String,Recommendation> getRecommendations(HealthSystemUser user)
 	{
         Statement stmt = null;
@@ -78,6 +81,116 @@ public class AlertController {
             ConnectionClass.close(conn);
         }
 		return result;
+	}
+	
+	public List<Alert> generateAlert(HealthSystemUser user)
+	{
+		try
+		{
+			UserController uc=new UserController();
+			Map<Observation,Recommendation> obsMap = new HashMap<Observation,Recommendation>();
+			obsMap=uc.getRecommendations(user);
+			for(Map.Entry<Observation, Recommendation> obsRecoValue : obsMap.entrySet())
+			{
+				Observation observation = obsRecoValue.getKey();
+				//TODO Temporary
+				observation.setId(5);
+				Recommendation recomendation = obsRecoValue.getValue();
+				recomendation.setUpperLimit(180.0);
+				recomendation.setLowerLimit(120.0);
+				AlertPatientInfo alertPatientInfo= getAlertPatientInfo(user,observation);
+				
+				//Low Frequency
+//				Integer frequency = recomendation.getFrequency();
+//				if(frequency>0)
+//				{
+//					Connection conn = null;
+//					Statement stmt = null;
+//					ResultSet rs = null;
+//					try
+//					{
+//						conn = ConnectionClass.connect();
+//						String query = "Select * from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND ROWNUM = 1 ORDER BY OBS_DATE_TIME";
+//						stmt = conn.createStatement(); 
+//						rs=stmt.executeQuery(query);
+//						if(rs.next())
+//						{
+//							Date date = rs.getDate("OBS_DATE_TIME");
+//							java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+//							int difference = (int)((currentDate.getTime() - date.getTime()) / MILLISECONDS_IN_DAY);
+//							int alertFrequencyThresold = alertPatientInfo.getAlertFrequencyThreshold();
+//							if(difference>(frequency+alertFrequencyThresold))
+//								System.out.println("LOW FREQUENCY ALERT !!!!");
+//						}
+//					}
+//					catch(Exception e1)
+//					{
+//					e1.printStackTrace();
+//					}
+//					finally
+//					{
+//						ConnectionClass.close(conn);
+//						ConnectionClass.close(stmt);
+//						ConnectionClass.close(rs);
+//					}
+//					
+//				}
+				
+				//Outside the limit
+				Double upperLimit = recomendation.getUpperLimit();
+				Double lowerLimit = recomendation.getLowerLimit();
+				Integer alertObservationThresold = alertPatientInfo.getAlertObservationThreshold();
+				Integer alertPercentageThreshold = alertPatientInfo.getAlertPercentageThreshold();
+				if(upperLimit!=null&&lowerLimit!=null&&alertObservationThresold!=null&&alertPercentageThreshold!=null)
+				{
+					Connection conn = null;
+					Statement stmt = null;
+					ResultSet rs = null;
+					try
+					{
+						conn = ConnectionClass.connect();
+						String query = "Select VALUE from (Select DISTINCT VALUE from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND "+alertObservationThresold+" ORDER BY OBS_DATE_TIME DESC) WHERE ROWNUM <= "+alertObservationThresold;
+						stmt = conn.createStatement(); 
+						rs=stmt.executeQuery(query);
+						int count = 0;
+						int totalCount = 0;
+						while(rs.next())
+						{
+							String val = rs.getString("VALUE");
+							int value = Integer.parseInt(val);
+							if(value<lowerLimit || value>upperLimit)
+								count ++;
+							totalCount++;
+						}
+						if(totalCount == alertObservationThresold)
+						{
+							Double percentage = (double) count*100/totalCount;
+							if(percentage>alertPercentageThreshold)
+								System.out.println("OUTSIDE THE LIMIT ALERT!!");
+						}
+					}
+					catch(Exception e1)
+					{
+					e1.printStackTrace();
+					}
+					finally
+					{
+						ConnectionClass.close(conn);
+						ConnectionClass.close(stmt);
+						ConnectionClass.close(rs);
+					}
+					
+				}
+				
+			}
+			List<Alert> alertList = new ArrayList<Alert>();
+			return alertList;	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public int insertAlert(HealthSystemUser user, Date alert_date)
@@ -241,6 +354,98 @@ public class AlertController {
             ConnectionClass.close(conn);
         }
         return alertList;
+	}
+	
+	public AlertPatientInfo getAlertPatientInfo(HealthSystemUser user)
+	{
+		AlertPatientInfo alertPatientInfo = null;
+        Statement stmt = null;
+        ResultSet rs1 = null;
+        Connection conn = null;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		// Create a statement object that will be sending your
+		// SQL statements to the DBMS
+		stmt = conn.createStatement();
+
+		String sql = "SELECT * "
+				+ "FROM ALERT_PATIENT_INFO a, OBSERVATION o where a.PATIENT_ID = '"+user.getId()+"' and o.OBSERVATION_ID=a.OBSERVATION_ID";
+			//Login
+			rs1 = stmt.executeQuery(sql);
+			
+			if(rs1.next()) {
+				//Add user details
+				Observation observation = new Observation(rs1.getInt("OBSERVATION_ID"), rs1.getString("OBSERVATION_TYPE"), rs1.getString("DESCRIPTION"),rs1.getString("MEASURE"),rs1.getString("METRIC"));
+				alertPatientInfo = new AlertPatientInfo();
+				alertPatientInfo.setPatient(user);
+				alertPatientInfo.setObservation(observation);
+				alertPatientInfo.setAlertFrequencyThreshold(rs1.getInt("ALERT_PERCENTAGE_THRESHOLD"));
+				alertPatientInfo.setAlertPercentageThreshold(rs1.getInt("ALERT_OBS_THRESHOLD"));
+				alertPatientInfo.setAlertFrequencyThreshold(rs1.getInt("ALERT_FREQUENCY_THRESHOLD"));
+			}
+
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(rs1);
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+		return alertPatientInfo;
+	}
+	
+	public AlertPatientInfo getAlertPatientInfo(HealthSystemUser user,Observation observation)
+	{
+		AlertPatientInfo alertPatientInfo = null;
+        Statement stmt = null;
+        ResultSet rs1 = null;
+        Connection conn = null;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		// Create a statement object that will be sending your
+		// SQL statements to the DBMS
+		stmt = conn.createStatement();
+
+		String sql = "SELECT * "
+				+ "FROM ALERT_PATIENT_INFO where PATIENT_ID = '"+user.getId()+"' and OBSERVATION_ID="+observation.getId();
+			//Login
+			rs1 = stmt.executeQuery(sql);
+			
+			if(rs1.next()) {
+				//Add user details
+				alertPatientInfo = new AlertPatientInfo();
+				alertPatientInfo.setPatient(user);
+				alertPatientInfo.setObservation(observation);
+				alertPatientInfo.setAlertPercentageThreshold(rs1.getInt("ALERT_PERCENTAGE_THRESHOLD"));
+				alertPatientInfo.setAlertObservationThreshold(rs1.getInt("ALERT_OBS_THRESHOLD"));
+				alertPatientInfo.setAlertFrequencyThreshold(rs1.getInt("ALERT_FREQUENCY_THRESHOLD"));
+			}
+
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+            alertPatientInfo = new AlertPatientInfo();
+            HealthSystemUser user1 = new HealthSystemUser();
+            user1.setId("P2");
+            Observation observation1 = new Observation();
+            observation.setId(5);
+            alertPatientInfo.setPatient(user);
+            alertPatientInfo.setObservation(observation1);
+            alertPatientInfo.setAlertObservationThreshold(2);
+            alertPatientInfo.setAlertPercentageThreshold(50);
+        }
+		finally {
+            ConnectionClass.close(rs1);
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+		return alertPatientInfo;
 	}
 	
 //	void alertSeen(Alert alert)

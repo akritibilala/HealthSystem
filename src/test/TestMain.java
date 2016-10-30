@@ -6,7 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import controller.AlertController;
 import controller.UserController;
 import model.Disease;
 import model.HealthSupporter;
@@ -16,12 +18,14 @@ public class TestMain {
 	
 	public static void main(String[] args) throws ParseException {
 		UserController user = new UserController();
-		HealthSystemUser u = new HealthSystemUser();
-		u.setId("P1");
-		HealthSystemUser u4 = new HealthSystemUser();
-		u4.setId("P3");
-		HealthSupporter u1 = new HealthSupporter();
-		u1.setId("P4");
+//		HealthSystemUser u = new HealthSystemUser();
+//		u.setId("P1");
+//		AlertController ac = new AlertController();
+//		ac.getAlertPatientInfo(u);
+//		HealthSystemUser u4 = new HealthSystemUser();
+//		u4.setId("P3");
+//		HealthSupporter u1 = new HealthSupporter();
+//		u1.setId("P4");
 //		Map<String,Recommendation> rec = user.getRecommendations(u);
 //		printMap(rec);
 //		System.out.println(user.getDiagnoses(u));
@@ -46,28 +50,36 @@ public class TestMain {
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 ////        Date parsed = format.parse("20110210");
 //        Date temp=sdf.parse("2016-10-17 00:00:00");
-//        u.setId("P3");
-//        v.setId("P2");
-//        o.setId(5);
+////        u.setId("P3");
+////        v.setId("P2");
+////        o.setId(5);
 ////        java.sql.Date sql = new java.sql.Date(parsed.getTime());
 //        java.sql.Date sql_temp = new java.sql.Date(temp.getTime());
+//        
+//        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+//        System.out.println(getDateDiff(date, sql_temp, TimeUnit.DAYS));
 //		//user.insertUser("P5", "Omkar", "Mumbai", "MALE", sql, "password");
 //        RecordController record = new RecordController();
 //		record.insertRecord(2,u,v, o, 195, sql_temp,sql_temp);
 		
 //		System.out.println(user.getHealthSupporters(u));
-		HealthSystemUser us1 = new HealthSystemUser();
-		HealthSupporter u2 = new HealthSupporter();
-		u2.setId("P2");
+//		HealthSystemUser us1 = new HealthSystemUser();
+//		HealthSupporter u2 = new HealthSupporter();
+//		u2.setId("P2");
+//		
+//		user.getHealthSupportersAuthorizations(u2);
+//		
+//		try {
+////			user.setDiagnoses(u, disease, date);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
-		user.getHealthSupportersAuthorizations(u2);
-		
-		try {
-//			user.setDiagnoses(u, disease, date);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		HealthSystemUser u = new HealthSystemUser();
+		u.setId("P1");
+		AlertController ac = new AlertController();
+		ac.generateAlert(u);
 	}
 	
 	public static void printMap(Map mp) {
@@ -77,6 +89,19 @@ public class TestMain {
 	        System.out.println(pair.getKey() + " = " + pair.getValue());
 	        it.remove(); // avoids a ConcurrentModificationException
 	    }
+	}
+	
+	/**
+	 * Get a diff between two dates
+	 * @param date1 the oldest date
+	 * @param date2 the newest date
+	 * @param timeUnit the unit in which you want the diff
+	 * @return the diff value, in the provided unit
+	 */
+	public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+	    long diffInMillies = date1.getTime() - date2.getTime();
+	    int day = (int)diffInMillies/(24*60*60*1000);
+	    return timeUnit.convert(diffInMillies,timeUnit);
 	}
 
 }
