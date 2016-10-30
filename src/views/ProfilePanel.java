@@ -3,6 +3,7 @@ package views;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -88,15 +89,25 @@ public class ProfilePanel extends JFrame {
 		JLabel lblNewLabel_4 = new JLabel(user.getDateOfBirth().toString());
 		lblNewLabel_4.setBounds(112, 114, 126, 14);
 		contentPane.add(lblNewLabel_4);
+		
+		/*JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(10, 136, 77, 14);
+		contentPane.add(lblPassword);
+		
+		JLabel lblNewLabel_5 = new JLabel(user.getPassword());
+		lblNewLabel_5.setBounds(112, 139, 115, 14);
+		contentPane.add(lblNewLabel_5);*/
 
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				new EditProfile(Main.currentUser).setVisible(true);
 			}
 		});
-		btnEdit.setBounds(10, 153, 89, 23);
+		btnEdit.setBounds(13, 181, 89, 23);
 		contentPane.add(btnEdit);
+		
 	}
 
 }
