@@ -88,6 +88,7 @@ public class AlertController {
 	
 	public List<Alert> generateAlert(HealthSystemUser user)
 	{
+		List<Alert> alertList = new ArrayList<Alert>();
 		try
 		{
 			UserController uc=new UserController();
@@ -117,7 +118,7 @@ public class AlertController {
 							Date date = rs.getDate("OBS_DATE_TIME");
 							java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 							int difference = (int)((currentDate.getTime() - date.getTime()) / MILLISECONDS_IN_DAY);
-							int alertFrequencyThresold = alertPatientInfo.getAlertFrequencyThreshold();
+							int alertFrequencyThresold = alertPatientInfo!=null?alertPatientInfo.getAlertFrequencyThreshold():0;
 							if(difference>(frequency+alertFrequencyThresold))
 							{
 								Alert alert = new Alert();
@@ -127,6 +128,7 @@ public class AlertController {
 								alert.setPatient(user);
 								alert.setStatus("ACTIVE");
 								alert.setType("low-activity");
+								alertList.add(alert);
 							}
 						}
 					}
@@ -144,62 +146,64 @@ public class AlertController {
 				}
 				
 				//Outside the limit
-				Double upperLimit = recomendation.getUpperLimit();
-				Double lowerLimit = recomendation.getLowerLimit();
-				Integer alertObservationThresold = alertPatientInfo.getAlertObservationThreshold();
-				Integer alertPercentageThreshold = alertPatientInfo.getAlertPercentageThreshold();
-				if(upperLimit!=null&&lowerLimit!=null&&alertObservationThresold!=null&&alertPercentageThreshold!=null)
+				if(alertPatientInfo!=null)
 				{
-					Connection conn = null;
-					Statement stmt = null;
-					ResultSet rs = null;
-					try
+					Double upperLimit = recomendation.getUpperLimit();
+					Double lowerLimit = recomendation.getLowerLimit();
+					Integer alertObservationThresold = alertPatientInfo.getAlertObservationThreshold();
+					Integer alertPercentageThreshold = alertPatientInfo.getAlertPercentageThreshold();
+					if(upperLimit!=null&&lowerLimit!=null&&alertObservationThresold!=null&&alertPercentageThreshold!=null)
 					{
-						conn = ConnectionClass.connect();
-						String query = "Select VALUE from (Select DISTINCT VALUE from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND "+alertObservationThresold+" ORDER BY OBS_DATE_TIME DESC) WHERE ROWNUM <= "+alertObservationThresold;
-						stmt = conn.createStatement(); 
-						rs=stmt.executeQuery(query);
-						int count = 0;
-						int totalCount = 0;
-						while(rs.next())
+						Connection conn = null;
+						Statement stmt = null;
+						ResultSet rs = null;
+						try
 						{
-							String val = rs.getString("VALUE");
-							int value = Integer.parseInt(val);
-							if(value<lowerLimit || value>upperLimit)
-								count ++;
-							totalCount++;
-						}
-						if(totalCount == alertObservationThresold)
-						{
-							Double percentage = (double) count*100/totalCount;
-							if(percentage>alertPercentageThreshold)
+							conn = ConnectionClass.connect();
+							String query = "Select * from (Select * from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" ORDER BY OBS_DATE_TIME DESC) WHERE ROWNUM <= "+alertObservationThresold;
+							stmt = conn.createStatement(); 
+							rs=stmt.executeQuery(query);
+							int count = 0;
+							int totalCount = 0;
+							while(rs.next())
 							{
-								Alert alert = new Alert();
-								alert.setAlertMessage(percentage+"% number of recordings are outside the limit");
-								java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-								alert.setDate(date);
-								alert.setObsType(observation);
-								alert.setPatient(user);
-								alert.setStatus("ACTIVE");
-								alert.setType("outside-the-limit");
+								String val = rs.getString("VALUE");
+								int value = Integer.parseInt(val);
+								if(value<lowerLimit || value>upperLimit)
+									count ++;
+								totalCount++;
+							}
+							if(totalCount == alertObservationThresold)
+							{
+								Double percentage = (double) count*100/totalCount;
+								if(percentage>alertPercentageThreshold)
+								{
+									Alert alert = new Alert();
+									alert.setAlertMessage(percentage+"% number of recordings are outside the limit");
+									java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+									alert.setDate(date);
+									alert.setObsType(observation);
+									alert.setPatient(user);
+									alert.setStatus("ACTIVE");
+									alert.setType("outside-the-limit");
+									alertList.add(alert);
+								}
 							}
 						}
+						catch(Exception e1)
+						{
+							e1.printStackTrace();
+						}
+						finally
+						{
+							ConnectionClass.close(conn);
+							ConnectionClass.close(stmt);
+							ConnectionClass.close(rs);
+						}
+						
 					}
-					catch(Exception e1)
-					{
-					e1.printStackTrace();
-					}
-					finally
-					{
-						ConnectionClass.close(conn);
-						ConnectionClass.close(stmt);
-						ConnectionClass.close(rs);
-					}
-					
 				}
-				
 			}
-			List<Alert> alertList = new ArrayList<Alert>();
 			return alertList;	
 		}
 		catch(Exception e)
@@ -308,7 +312,7 @@ public class AlertController {
 		//Alert
 		rs1 = stmt.executeQuery("SELECT a.ALERT_ID,a.ALERT_TYPE,a.ALERT_STATUS,a.ALERT_MESSAGE,a.ALERT_DATE,"
 				+" o.OBSERVATION_ID, o.OBSERVATION_TYPE, o.MEASURE, o. METRIC, o.DESCRIPTION "
-			+ "FROM ALERT a, OBSERVATION o where a.ALERT_STATUS = 'ACTIVE' and a.ALERT_SEEN = 'false' and a.OBSERVATION_ID=o.OBSERVATION_ID and a.PATIENT_ID = '"+user.getId()+"'");
+			+ "FROM ALERT a, OBSERVATION o where a.ALERT_STATUS = 'ACTIVE' and a.OBSERVATION_ID=o.OBSERVATION_ID and a.PATIENT_ID = '"+user.getId()+"'");
 		
 		while (rs1.next()) {
 			//Add disease
@@ -348,8 +352,8 @@ public class AlertController {
 		//Alert
 			rs1 = stmt.executeQuery("SELECT a.ALERT_ID,a.ALERT_TYPE,a.ALERT_STATUS,a.ALERT_MESSAGE,a.ALERT_DATE,"
 					+" o.OBSERVATION_ID, o.OBSERVATION_TYPE, o.MEASURE, o. METRIC, o.DESCRIPTION, "
-					+" h.NAME, h.ADDRESS, h.GENDER, h.DOB, h.PASSWORD, h.TYPE "
-				+ "FROM ALERT a, OBSERVATION o, HEALTHSYSTEM_USER h where a.PATIENT_ID = a.ID and a.ALERT_STATUS = 'ACTIVE' and a.ALERT_SEEN = 'false' and a.OBSERVATION_ID=o.OBSERVATION_ID and a.PATIENT_ID IN "
+					+" h.NAME, h.ID, h.ADDRESS, h.GENDER, h.DOB, h.PASSWORD, h.TYPE "
+				+ "FROM ALERT a, OBSERVATION o, HEALTHSYSTEM_USER h where a.PATIENT_ID = h.ID and a.ALERT_STATUS = 'ACTIVE' and a.ALERT_SEEN = 'false' and a.OBSERVATION_ID=o.OBSERVATION_ID and a.PATIENT_ID IN "
 				+ "(Select PATIENT_ID from AUTHORIZATION where HEALTH_SUPPORTER_ID = '"+user.getId()+"')");
 			
 			while (rs1.next()) {

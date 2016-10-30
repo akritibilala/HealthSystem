@@ -13,6 +13,7 @@ import java.util.Map;
 
 import Utility.ConnectionClass;
 import model.Authorization;
+import model.Disease;
 import model.HealthSupporter;
 import model.HealthSystemUser;
 import model.Observation;
@@ -598,6 +599,38 @@ public class UserController {
             ConnectionClass.close(conn);
         }
         return patientList;
+	}
+	
+	public int deleteHealthSupporter(HealthSystemUser user, HealthSupporter healthSupporter) {
+		
+        Statement stmt = null;
+        ResultSet rs1 = null;
+        Connection conn = null;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		// Create a statement object that will be sending your
+		// SQL statements to the DBMS
+		stmt = conn.createStatement();
+
+		//Disease
+			int count = stmt.executeUpdate("DELETE "
+				+ "FROM AUTHORIZATION "
+				+ "WHERE PATIENT_ID = '"+user.getId()+"' "
+				+ "AND HEALTH_SUPPORTER_ID = '"+healthSupporter.getId()+"'");
+			
+			return count;
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(rs1);
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+        return -1;
 	}
 	
 }

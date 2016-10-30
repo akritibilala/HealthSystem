@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.UserController;
 import model.Authorization;
+import model.HealthSupporter;
 import model.HealthSystemUser;
 import javax.swing.DefaultComboBoxModel;
 
@@ -84,6 +85,11 @@ public class HealthSupporterPanel extends JFrame {
 		
 		JComboBox cmbxType = new JComboBox();
 		cmbxType.setModel(new DefaultComboBoxModel(new String[] {"PRIMARY", "SECONDARY"}));
+		
+		JComboBox comboBox = new JComboBox();
+		
+		JButton btnNewButton = new JButton("Delete Health Supporter");
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -91,23 +97,29 @@ public class HealthSupporterPanel extends JFrame {
 					.addGap(12)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblUserIs, GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
-						.addGroup(gl_contentPane.createSequentialGroup()
+						.addComponent(btnSignup, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE)
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 							.addGap(17)
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(40)
-							.addComponent(cmbxType, 0, 179, Short.MAX_VALUE)
-							.addGap(57)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(cmbxHs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(cmbxUsers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-							.addGap(42)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnViewDetails, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-								.addComponent(btnAddDetails, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)))
-						.addComponent(btnSignup, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE))
+									.addGap(23)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_contentPane.createSequentialGroup()
+											.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addGap(27)
+											.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))
+										.addComponent(cmbxType, Alignment.TRAILING, 0, 179, Short.MAX_VALUE))
+									.addGap(57)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(cmbxHs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGroup(gl_contentPane.createSequentialGroup()
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(cmbxUsers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+									.addGap(42)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnViewDetails, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+										.addComponent(btnAddDetails, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)))
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -115,11 +127,19 @@ public class HealthSupporterPanel extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
-					.addGap(21)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnViewDetails)
-						.addComponent(cmbxHs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(19)
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(21)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnViewDetails)
+								.addComponent(cmbxHs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(19))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnNewButton)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)))
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnAddDetails)
 						.addComponent(cmbxUsers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -145,6 +165,7 @@ public class HealthSupporterPanel extends JFrame {
 			rowData[i][3] = auth.getHealthSupporterType();
 			i++;
 			cmbxHs.addItem(auth.getHealthSupporter().getId());
+			comboBox.addItem(auth.getHealthSupporter().getId());
 		}	
 		
 		btnViewDetails.addActionListener(new ActionListener() {
@@ -186,7 +207,28 @@ public class HealthSupporterPanel extends JFrame {
 
 			
 		});
-		
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int index = cmbxHs.getSelectedIndex();
+				HealthSupporter healthSupporter = authList.get(index).getHealthSupporter();
+				try
+				{
+					int count = controller.deleteHealthSupporter(Main.currentUser, healthSupporter);
+					if(count == 1)
+					{
+						JOptionPane.showMessageDialog(null, "HealthSupporter deleted successfully!","Delete HealthSupporter",JOptionPane.INFORMATION_MESSAGE);
+						refreshPanel();
+					}
+					else
+						JOptionPane.showMessageDialog(null, "Error in deleting healthsupporter!","Delete HealthSupporter",JOptionPane.ERROR_MESSAGE);
+				}
+				catch(Exception e1)
+				{
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, e1.getMessage(),"Delete HealthSupporter",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		table = new JTable(rowData, columnNames);
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);

@@ -43,7 +43,7 @@ public class HealthSupporterHome extends JFrame {
 	public HealthSupporterHome() {
 		setTitle("Health Supporter - Home");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 179, 248);
+		setBounds(100, 100, 351, 242);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -62,7 +62,6 @@ public class HealthSupporterHome extends JFrame {
 		});
 		
 		JButton btnNewButton_3 = new JButton("Patients");
-		btnNewButton_3.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new PatientsPanel().setVisible(true);
@@ -77,10 +76,9 @@ public class HealthSupporterHome extends JFrame {
 		});
 		
 		JButton btnNewButton = new JButton("Alerts");
-		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new AlertHealthSupporterPanel().setVisible(true);
+				new AlertPatientHealthSupporterPanel().setVisible(true);
 			}
 		});
 		
@@ -96,7 +94,6 @@ public class HealthSupporterHome extends JFrame {
 		gbc_btnNewButton.gridx = 1;
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(btnNewButton, gbc_btnNewButton);
-		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 0);
@@ -109,15 +106,14 @@ public class HealthSupporterHome extends JFrame {
 		gbc_btnNewButton_3.gridx = 1;
 		gbc_btnNewButton_3.gridy = 4;
 		contentPane.add(btnNewButton_3, gbc_btnNewButton_3);
-		btnRecord.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnRecord = new GridBagConstraints();
-		gbc_btnRecord.insets = new Insets(0, 0, 5, 0);
 		gbc_btnRecord.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnRecord.insets = new Insets(0, 0, 5, 0);
 		gbc_btnRecord.gridx = 1;
 		gbc_btnRecord.gridy = 5;
 		contentPane.add(btnRecord, gbc_btnRecord);
 		
-		lblLblsuppporterhome.setText("Logged in as : "+Main.currentUser);
+		lblLblsuppporterhome.setText("Health Supporter : Logged in as : "+Main.currentUser.getId());
 	}
 
 }

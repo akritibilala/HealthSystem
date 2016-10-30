@@ -43,7 +43,7 @@ public class PatientHome extends JFrame {
 	public PatientHome() {
 		setTitle("Patient - Home");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 221, 299);
+		setBounds(100, 100, 290, 320);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -55,6 +55,7 @@ public class PatientHome extends JFrame {
 		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnRecord = new JButton("Record");
+		btnRecord.setVerticalAlignment(SwingConstants.TOP);
 		btnRecord.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new RecordUserPanel().setVisible(true);
@@ -62,7 +63,6 @@ public class PatientHome extends JFrame {
 		});
 		
 		JButton btnNewButton_4 = new JButton("Diagnosis");
-		btnNewButton_4.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new DiagnosisPanel().setVisible(true);
@@ -70,7 +70,6 @@ public class PatientHome extends JFrame {
 		});
 		
 		JButton btnNewButton_3 = new JButton("Health Supporters");
-		btnNewButton_3.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new HealthSupporterPanel().setVisible(true);
@@ -78,7 +77,6 @@ public class PatientHome extends JFrame {
 		});
 		
 		JButton btnNewButton_2 = new JButton("Health Indicator");
-		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new HealthIndicatorPanel().setVisible(true);
@@ -93,7 +91,6 @@ public class PatientHome extends JFrame {
 		});
 		
 		JButton btnNewButton = new JButton("Alerts");
-		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new AlertPatientPanel().setVisible(true); 
@@ -106,14 +103,13 @@ public class PatientHome extends JFrame {
 		gbc_lblPatient.gridx = 1;
 		gbc_lblPatient.gridy = 1;
 		contentPane.add(lblPatient, gbc_lblPatient);
-		lblPatient.setText("Logged in as : "+Main.currentUser.getId());
+		lblPatient.setText("Patient: Logged in as : "+Main.currentUser.getId());
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.gridx = 1;
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(btnNewButton, gbc_btnNewButton);
-		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 0);
@@ -138,7 +134,6 @@ public class PatientHome extends JFrame {
 		gbc_btnNewButton_4.gridx = 1;
 		gbc_btnNewButton_4.gridy = 6;
 		contentPane.add(btnNewButton_4, gbc_btnNewButton_4);
-		btnRecord.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnRecord = new GridBagConstraints();
 		gbc_btnRecord.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnRecord.gridx = 1;

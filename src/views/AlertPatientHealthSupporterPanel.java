@@ -79,7 +79,7 @@ public class AlertPatientHealthSupporterPanel extends JFrame {
 				{
 					ac.insertAlert(alert);
 				}
-				populateAlerts();
+				refreshPanel();
 			}
 		});
 		
@@ -112,6 +112,7 @@ public class AlertPatientHealthSupporterPanel extends JFrame {
 				int index = cmbxAlerts.getSelectedIndex();
 				Alert alert = alertList.get(index);
 				controller.clearAlert(alert);
+				refreshPanel();
 			}
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);

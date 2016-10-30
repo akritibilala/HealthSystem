@@ -73,7 +73,7 @@ public class AlertPatientPanel extends JFrame {
 				{
 					ac.insertAlert(alert);
 				}
-				populateAlerts();
+				refreshPanel();
 			}
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
