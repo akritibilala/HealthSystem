@@ -361,7 +361,7 @@ public class UserController {
 		update.setString(2, address);
 		update.setString(3, gender);
 		update.setDate(4, date);
-		update.setString(6, id);
+		update.setString(5, id);
 		
 		result = update.executeUpdate();
 			

@@ -23,6 +23,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JCheckBox;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JSeparator;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Main {
 
@@ -60,49 +64,19 @@ public class Main {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 486, 269);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		JLabel lblUsername = new JLabel("Username");
-		frame.getContentPane().add(lblUsername, "4, 4");
 		
 		txtUsername = new JTextField();
 		txtUsername.setHorizontalAlignment(SwingConstants.LEFT);
-		frame.getContentPane().add(txtUsername, "8, 4, left, default");
 		txtUsername.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password");
-		frame.getContentPane().add(lblPassword, "4, 6");
 		
 		passwordField = new JPasswordField();
 		passwordField.setColumns(10);
-		frame.getContentPane().add(passwordField, "8, 6, left, default");
 		
 		JCheckBox chkHs = new JCheckBox("Health Supporter?");
-		frame.getContentPane().add(chkHs, "4, 8");
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
@@ -135,11 +109,6 @@ public class Main {
 			}
 		});
 		
-
-		
-		JLabel lblOr = new JLabel("OR");
-		frame.getContentPane().add(lblOr, "6, 12, center, default");
-		
 		JButton btnSignup = new JButton("Signup");
 		btnSignup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -147,8 +116,68 @@ public class Main {
 				frame.dispose();
 			}
 		});
-		frame.getContentPane().add(btnSignup, "6, 14");
-		frame.getContentPane().add(btnLogin, "6, 10");
+		
+		JSeparator separator = new JSeparator();
+		
+		JLabel lblWelcomeToHealth = new JLabel("HEALTH MANAGEMENT SYSTEM");
+		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(38)
+							.addComponent(chkHs)
+							.addGap(18)
+							.addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(38)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+									.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(txtUsername))
+								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+									.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 227, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(separator)))
+					.addGap(17))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(142)
+					.addComponent(btnSignup, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+					.addGap(177))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(93)
+					.addComponent(lblWelcomeToHealth, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+					.addGap(108))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(12)
+					.addComponent(lblWelcomeToHealth)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblUsername)
+						.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(13)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPassword)
+						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(10)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chkHs)
+						.addComponent(btnLogin))
+					.addGap(20)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnSignup)
+					.addGap(24))
+		);
+		frame.getContentPane().setLayout(groupLayout);
 	}
-
 }

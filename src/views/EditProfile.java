@@ -129,11 +129,24 @@ public class EditProfile extends JFrame {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				java.sql.Date dob;
 					dob = new java.sql.Date(sdf.parse(dateString).getTime());
+					String id = textField.getText();
+					String name = textField_1.getText();
+					String address = textField_2.getText();
+					String gender = textField_3.getText();
 				int count = userController.updateUser(textField.getText(), textField_1.getText(), 
 						textField_2.getText(), textField_3.getText(), dob);
 				if(count == 1)
-				JOptionPane.showMessageDialog(null, "Profile is updated successfully!","Edit Profile",
-                        JOptionPane.INFORMATION_MESSAGE);
+				{
+					JOptionPane.showMessageDialog(null, "Profile is updated successfully!","Edit Profile",
+							JOptionPane.INFORMATION_MESSAGE);
+					if(textField.getText().equals(Main.currentUser.getId()))
+					{
+						Main.currentUser.setAddress(address);
+						Main.currentUser.setDateOfBirth(dob);
+						Main.currentUser.setGender(gender);
+						Main.currentUser.setName(name);
+					}
+				}
 				else
 					JOptionPane.showMessageDialog(null, "Error in updating profiel!","Edit Profile - Error",JOptionPane.ERROR_MESSAGE);
 				} catch (Exception e1) {

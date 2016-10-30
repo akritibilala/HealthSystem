@@ -16,6 +16,8 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class PatientHome extends JFrame {
 
@@ -43,16 +45,10 @@ public class PatientHome extends JFrame {
 	public PatientHome() {
 		setTitle("Patient - Home");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 290, 320);
+		setBounds(100, 100, 290, 306);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnRecord = new JButton("Record");
 		btnRecord.setVerticalAlignment(SwingConstants.TOP);
@@ -98,47 +94,42 @@ public class PatientHome extends JFrame {
 		});
 		
 		JLabel lblPatient = new JLabel("New label");
-		GridBagConstraints gbc_lblPatient = new GridBagConstraints();
-		gbc_lblPatient.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPatient.gridx = 1;
-		gbc_lblPatient.gridy = 1;
-		contentPane.add(lblPatient, gbc_lblPatient);
+		lblPatient.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblPatient.setText("Patient: Logged in as : "+Main.currentUser.getId());
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 2;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_1.gridx = 1;
-		gbc_btnNewButton_1.gridy = 3;
-		contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_2.gridx = 1;
-		gbc_btnNewButton_2.gridy = 4;
-		contentPane.add(btnNewButton_2, gbc_btnNewButton_2);
-		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-		gbc_btnNewButton_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_3.gridx = 1;
-		gbc_btnNewButton_3.gridy = 5;
-		contentPane.add(btnNewButton_3, gbc_btnNewButton_3);
-		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
-		gbc_btnNewButton_4.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_4.fill = GridBagConstraints.BOTH;
-		gbc_btnNewButton_4.gridx = 1;
-		gbc_btnNewButton_4.gridy = 6;
-		contentPane.add(btnNewButton_4, gbc_btnNewButton_4);
-		GridBagConstraints gbc_btnRecord = new GridBagConstraints();
-		gbc_btnRecord.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnRecord.gridx = 1;
-		gbc_btnRecord.gridy = 7;
-		contentPane.add(btnRecord, gbc_btnRecord);
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(30)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblPatient)
+						.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton_3, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton_4, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnRecord, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE))
+					.addGap(34))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblPatient)
+					.addGap(22)
+					.addComponent(btnNewButton)
+					.addGap(5)
+					.addComponent(btnNewButton_1)
+					.addGap(5)
+					.addComponent(btnNewButton_2)
+					.addGap(5)
+					.addComponent(btnNewButton_3)
+					.addGap(5)
+					.addComponent(btnNewButton_4)
+					.addGap(5)
+					.addComponent(btnRecord))
+		);
+		contentPane.setLayout(gl_contentPane);
 	}
 
 }

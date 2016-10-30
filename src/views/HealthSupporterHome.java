@@ -16,6 +16,8 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class HealthSupporterHome extends JFrame {
 
@@ -43,16 +45,10 @@ public class HealthSupporterHome extends JFrame {
 	public HealthSupporterHome() {
 		setTitle("Health Supporter - Home");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 351, 242);
+		setBounds(100, 100, 351, 236);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnRecord = new JButton("Record");
 		btnRecord.addActionListener(new ActionListener() {
@@ -83,37 +79,36 @@ public class HealthSupporterHome extends JFrame {
 		});
 		
 		JLabel lblLblsuppporterhome = new JLabel("lblSuppporterHome");
-		GridBagConstraints gbc_lblLblsuppporterhome = new GridBagConstraints();
-		gbc_lblLblsuppporterhome.insets = new Insets(0, 0, 5, 0);
-		gbc_lblLblsuppporterhome.gridx = 1;
-		gbc_lblLblsuppporterhome.gridy = 1;
-		contentPane.add(lblLblsuppporterhome, gbc_lblLblsuppporterhome);
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 2;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_1.gridx = 1;
-		gbc_btnNewButton_1.gridy = 3;
-		contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
-		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-		gbc_btnNewButton_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_3.gridx = 1;
-		gbc_btnNewButton_3.gridy = 4;
-		contentPane.add(btnNewButton_3, gbc_btnNewButton_3);
-		GridBagConstraints gbc_btnRecord = new GridBagConstraints();
-		gbc_btnRecord.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnRecord.insets = new Insets(0, 0, 5, 0);
-		gbc_btnRecord.gridx = 1;
-		gbc_btnRecord.gridy = 5;
-		contentPane.add(btnRecord, gbc_btnRecord);
 		
 		lblLblsuppporterhome.setText("Health Supporter : Logged in as : "+Main.currentUser.getId());
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(30)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblLblsuppporterhome)
+						.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton_3, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnRecord, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE))
+					.addGap(33))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblLblsuppporterhome)
+					.addGap(14)
+					.addComponent(btnNewButton)
+					.addGap(5)
+					.addComponent(btnNewButton_1)
+					.addGap(5)
+					.addComponent(btnNewButton_3)
+					.addGap(5)
+					.addComponent(btnRecord))
+		);
+		contentPane.setLayout(gl_contentPane);
 	}
 
 }
