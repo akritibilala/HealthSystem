@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Utility.ConnectionClass;
 import model.Authorization;
 import model.Disease;
 import model.HealthSupporter;
 import model.HealthSystemUser;
 import model.Observation;
 import model.Recommendation;
+import utils.ConnectionClass;
 
 public class DiseaseController {
 	

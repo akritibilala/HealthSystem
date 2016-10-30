@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 
-import Utility.ConnectionClass;
 import model.HealthSystemUser;
 import model.Observation;
+import utils.ConnectionClass;
 
 public class RecordController {
 	

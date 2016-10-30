@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import Utility.ConnectionClass;
 import model.Alert;
 import model.AlertPatientInfo;
 import model.Authorization;
@@ -21,6 +20,7 @@ import model.HealthSupporter;
 import model.HealthSystemUser;
 import model.Observation;
 import model.Recommendation;
+import utils.ConnectionClass;
 import views.Main;
  
 

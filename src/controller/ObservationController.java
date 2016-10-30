@@ -6,9 +6,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Utility.ConnectionClass;
 import model.Disease;
 import model.Observation;
+import utils.ConnectionClass;
 
 public class ObservationController {
 	

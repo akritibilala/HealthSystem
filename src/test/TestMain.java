@@ -11,13 +11,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import Utility.ConnectionClass;
 import controller.AlertController;
 import controller.UserController;
 import model.Alert;
 import model.Disease;
 import model.HealthSupporter;
 import model.HealthSystemUser;
+import utils.ConnectionClass;
 
 public class TestMain {
 	

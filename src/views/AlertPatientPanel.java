@@ -81,9 +81,9 @@ public class AlertPatientPanel extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnGenerateAlerts)
 							.addPreferredGap(ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
 							.addComponent(btnAddObservation)))
@@ -93,12 +93,12 @@ public class AlertPatientPanel extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnAddObservation)
 						.addComponent(btnGenerateAlerts))
-					.addContainerGap(23, Short.MAX_VALUE))
+					.addGap(23))
 		);
 		
 		AlertController controller = new AlertController();

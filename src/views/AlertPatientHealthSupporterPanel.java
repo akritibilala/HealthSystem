@@ -128,7 +128,7 @@ public class AlertPatientHealthSupporterPanel extends JFrame {
 							.addComponent(cmbxAlerts, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnClearAlerts)
-							.addPreferredGap(ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
 							.addComponent(btnAddObservation)))
 					.addContainerGap())
 		);
@@ -136,14 +136,14 @@ public class AlertPatientHealthSupporterPanel extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnAddObservation)
 						.addComponent(btnGenerateAlerts)
 						.addComponent(cmbxAlerts, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnClearAlerts))
-					.addContainerGap(23, Short.MAX_VALUE))
+					.addGap(23))
 		);
 		
 		
