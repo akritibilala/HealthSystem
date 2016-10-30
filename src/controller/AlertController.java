@@ -471,11 +471,19 @@ public class AlertController {
 	
 	public List<Alert> generateAlertForHealthSupporter(HealthSystemUser currentUser) {
 		UserController controller = new UserController();
+		List<Alert> alerts = new ArrayList<Alert>();	
 		List<Authorization> users = controller.getPatientsUnderHealthSupporter((HealthSupporter)Main.currentUser);
 		for(Authorization authorization : users)
 		{
-			
+			List<Alert> alertPatient = generateAlert(authorization.getPatient());
+			alerts.addAll(alertPatient);
 		}
+		return alerts;
+	}
+	
+	void clearAlert(Alert alert)
+	{
+		
 	}
 	
 //	void alertSeen(Alert alert)

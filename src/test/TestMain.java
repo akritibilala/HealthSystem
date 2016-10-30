@@ -109,62 +109,62 @@ public class TestMain {
 	    return timeUnit.convert(diffInMillies,timeUnit);
 	}
 	
-	void test()
-	{
-		//Outside the limit
-		Double upperLimit = recomendation.getUpperLimit();
-		Double lowerLimit = recomendation.getLowerLimit();
-		Integer alertObservationThresold = alertPatientInfo.getAlertObservationThreshold();
-		Integer alertPercentageThreshold = alertPatientInfo.getAlertPercentageThreshold();
-		if(upperLimit!=null&&lowerLimit!=null&&alertObservationThresold!=null&&alertPercentageThreshold!=null)
-		{
-			Connection conn = null;
-			Statement stmt = null;
-			ResultSet rs = null;
-			try
-			{
-				conn = ConnectionClass.connect();
-				String query = "Select VALUE from (Select DISTINCT VALUE from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND "+alertObservationThresold+" ORDER BY OBS_DATE_TIME DESC) WHERE ROWNUM <= "+alertObservationThresold;
-				stmt = conn.createStatement(); 
-				rs=stmt.executeQuery(query);
-				int count = 0;
-				int totalCount = 0;
-				while(rs.next())
-				{
-					String val = rs.getString("VALUE");
-					int value = Integer.parseInt(val);
-					if(value<lowerLimit || value>upperLimit)
-						count ++;
-					totalCount++;
-				}
-				if(totalCount == alertObservationThresold)
-				{
-					Double percentage = (double) count*100/totalCount;
-					if(percentage>alertPercentageThreshold)
-					{
-						Alert alert = new Alert();
-						alert.setAlertMessage(percentage+"% number of recordings are outside the limit");
-						java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-						alert.setDate(date);
-						alert.setObsType(observation);
-						alert.setPatient(user);
-						alert.setStatus("ACTIVE");
-						alert.setType("outside-the-limit");
-					}
-				}
-			}
-			catch(Exception e1)
-			{
-			e1.printStackTrace();
-			}
-			finally
-			{
-				ConnectionClass.close(conn);
-				ConnectionClass.close(stmt);
-				ConnectionClass.close(rs);
-			}
-			
-		}
-	}
+//	void test()
+//	{
+//		//Outside the limit
+//		Double upperLimit = recomendation.getUpperLimit();
+//		Double lowerLimit = recomendation.getLowerLimit();
+//		Integer alertObservationThresold = alertPatientInfo.getAlertObservationThreshold();
+//		Integer alertPercentageThreshold = alertPatientInfo.getAlertPercentageThreshold();
+//		if(upperLimit!=null&&lowerLimit!=null&&alertObservationThresold!=null&&alertPercentageThreshold!=null)
+//		{
+//			Connection conn = null;
+//			Statement stmt = null;
+//			ResultSet rs = null;
+//			try
+//			{
+//				conn = ConnectionClass.connect();
+//				String query = "Select VALUE from (Select DISTINCT VALUE from Record where patient_id='"+user.getId()+"' AND OBS_ID="+observation.getId()+" AND "+alertObservationThresold+" ORDER BY OBS_DATE_TIME DESC) WHERE ROWNUM <= "+alertObservationThresold;
+//				stmt = conn.createStatement(); 
+//				rs=stmt.executeQuery(query);
+//				int count = 0;
+//				int totalCount = 0;
+//				while(rs.next())
+//				{
+//					String val = rs.getString("VALUE");
+//					int value = Integer.parseInt(val);
+//					if(value<lowerLimit || value>upperLimit)
+//						count ++;
+//					totalCount++;
+//				}
+//				if(totalCount == alertObservationThresold)
+//				{
+//					Double percentage = (double) count*100/totalCount;
+//					if(percentage>alertPercentageThreshold)
+//					{
+//						Alert alert = new Alert();
+//						alert.setAlertMessage(percentage+"% number of recordings are outside the limit");
+//						java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+//						alert.setDate(date);
+//						alert.setObsType(observation);
+//						alert.setPatient(user);
+//						alert.setStatus("ACTIVE");
+//						alert.setType("outside-the-limit");
+//					}
+//				}
+//			}
+//			catch(Exception e1)
+//			{
+//			e1.printStackTrace();
+//			}
+//			finally
+//			{
+//				ConnectionClass.close(conn);
+//				ConnectionClass.close(stmt);
+//				ConnectionClass.close(rs);
+//			}
+//			
+//		}
+//	}
 
 }
