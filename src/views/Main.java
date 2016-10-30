@@ -63,7 +63,7 @@ public class Main {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 486, 269);
+		frame.setBounds(100, 100, 583, 268);
 		
 		JLabel lblUsername = new JLabel("Username");
 		
@@ -121,40 +121,48 @@ public class Main {
 		JSeparator separator = new JSeparator();
 		
 		JLabel lblWelcomeToHealth = new JLabel("HEALTH MANAGEMENT SYSTEM");
+		
+		JLabel lblIfAPatient = new JLabel("(If a patient is also a health-supporter, check this box to log in as Health Supporter)");
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(38)
-							.addComponent(chkHs)
-							.addGap(18)
-							.addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(38)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-									.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(txtUsername))
-								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-									.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 227, GroupLayout.PREFERRED_SIZE)))
-							.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(separator)))
-					.addGap(17))
-				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(142)
-					.addComponent(btnSignup, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+					.addComponent(btnSignup, GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
 					.addGap(177))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(93)
-					.addComponent(lblWelcomeToHealth, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-					.addGap(108))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addGap(38)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(txtUsername, GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(passwordField, GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)))
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addGap(38)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblIfAPatient)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(chkHs)
+									.addGap(18)
+									.addComponent(btnLogin, GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+									.addGap(76)))
+							.addGap(32)))
+					.addGap(17))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(separator, GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
+					.addGap(17))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(167)
+					.addComponent(lblWelcomeToHealth, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(215))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -173,11 +181,13 @@ public class Main {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(chkHs)
 						.addComponent(btnLogin))
-					.addGap(20)
-					.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblIfAPatient)
+					.addGap(8)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 13, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSignup)
-					.addGap(24))
+					.addContainerGap())
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}

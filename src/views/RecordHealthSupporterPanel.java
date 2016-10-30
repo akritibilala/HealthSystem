@@ -158,14 +158,11 @@ public class RecordHealthSupporterPanel extends JFrame {
 				Date temp = null;
 				try {
 					temp=sdf.parse(date);
-				
-				java.sql.Date recordingTime = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-	        	java.sql.Date sql_temp = new java.sql.Date(temp.getTime());
-	        	RecordController record = new RecordController();
-	        	Main.currentUser = new HealthSystemUser();
-	        	Main.currentUser.setId("P1");
-				int count = record.insertRecord(patient,Main.currentUser,observation, value, sql_temp,recordingTime);
-				if(count == 1)
+					java.sql.Date recordingTime = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+					java.sql.Date sql_temp = new java.sql.Date(temp.getTime());
+					RecordController record = new RecordController();
+					int count = record.insertRecord(patient,Main.currentUser,observation, value, sql_temp,recordingTime);
+					if(count == 1)
 						JOptionPane.showMessageDialog(null, "Observation Record added successfully!","Add Record",JOptionPane.INFORMATION_MESSAGE);
 				else
 					JOptionPane.showMessageDialog(null, "Error in adding observation record!","Add Record",JOptionPane.ERROR_MESSAGE);

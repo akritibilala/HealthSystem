@@ -133,13 +133,10 @@ public class RecordUserPanel extends JFrame {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 				Date temp = null;
 				try {
-					temp=sdf.parse(date);
-				
+				temp=sdf.parse(date);
 				java.sql.Date recordingTime = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 	        	java.sql.Date sql_temp = new java.sql.Date(temp.getTime());
 	        	RecordController record = new RecordController();
-	        	Main.currentUser = new HealthSystemUser();
-	        	Main.currentUser.setId("P1");
 				int count = record.insertRecord(Main.currentUser,observation, value, sql_temp,recordingTime);
 				if(count == 1)
 						JOptionPane.showMessageDialog(null, "Observation Record added successfully!","Add Record",JOptionPane.INFORMATION_MESSAGE);

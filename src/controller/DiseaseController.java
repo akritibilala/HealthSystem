@@ -170,7 +170,7 @@ public class DiseaseController {
 	    
         } catch(SQLException oops) {
         	oops.printStackTrace();
-            throw new Exception("Error in adding diagnosis to patient : "+user.getName());
+            throw oops;
         }
 		catch(Throwable t)
 		{
