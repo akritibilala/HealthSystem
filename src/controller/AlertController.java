@@ -273,6 +273,11 @@ public class AlertController {
 		return result;
 	}
 	
+	public void insertAlert(Alert alert)
+	{
+		
+	}
+	
 	public List<Alert> getAllAlerts(HealthSystemUser user)
 	{
 		List<Alert> alertList = new ArrayList<Alert>();

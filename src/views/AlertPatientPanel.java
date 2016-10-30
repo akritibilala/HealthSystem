@@ -17,6 +17,7 @@ import model.Authorization;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class AlertPatientPanel extends JFrame {
 
@@ -57,6 +58,14 @@ public class AlertPatientPanel extends JFrame {
 				new HealthIndicatorPanel().setVisible(true);
 			}
 		});
+		
+		JButton btnGenerateAlerts = new JButton("Generate Alerts");
+		btnGenerateAlerts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AlertController ac = new AlertController();
+				ac.generateAlert(Main.currentUser);
+			}
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -64,7 +73,10 @@ public class AlertPatientPanel extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
-						.addComponent(btnAddObservation))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addComponent(btnGenerateAlerts)
+							.addPreferredGap(ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
+							.addComponent(btnAddObservation)))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -73,7 +85,9 @@ public class AlertPatientPanel extends JFrame {
 					.addContainerGap()
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addComponent(btnAddObservation)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnAddObservation)
+						.addComponent(btnGenerateAlerts))
 					.addContainerGap(23, Short.MAX_VALUE))
 		);
 		
@@ -97,5 +111,4 @@ public class AlertPatientPanel extends JFrame {
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
 	}
-
 }
