@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Alert {
 		
-	private String id;
+	private int id;
 	
 	private String type;
 	
@@ -18,7 +18,7 @@ public class Alert {
 	
 	private HealthSystemUser patient;
 	
-	public Alert(String id,String type,String status,String alertMessage,Date date,Observation observation)
+	public Alert(int id,String type,String status,String alertMessage,Date date,Observation observation)
 	{
 		this.id = id;
 		this.type = type;
@@ -28,7 +28,7 @@ public class Alert {
 		this.obsType = observation;
 	}
 	
-	public Alert(String id,String type,String status,String alertMessage,Date date,Observation observation,HealthSystemUser patient)
+	public Alert(int id,String type,String status,String alertMessage,Date date,Observation observation,HealthSystemUser patient)
 	{
 		this.id = id;
 		this.type = type;
@@ -43,11 +43,11 @@ public class Alert {
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

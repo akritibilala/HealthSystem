@@ -289,11 +289,6 @@ public class AlertController {
 		return result;
 	}
 	
-	public void insertAlert(Alert alert)
-	{
-		
-	}
-	
 	public List<Alert> getAllAlerts(HealthSystemUser user)
 	{
 		List<Alert> alertList = new ArrayList<Alert>();
@@ -318,7 +313,7 @@ public class AlertController {
 		while (rs1.next()) {
 			//Add disease
 			Observation observation = new Observation(rs1.getInt("OBSERVATION_ID"), rs1.getString("OBSERVATION_TYPE"),rs1.getString("DESCRIPTION"),rs1.getString("MEASURE"), rs1.getString("METRIC"));
-			Alert alert = new Alert(rs1.getString("ALERT_ID"),rs1.getString("ALERT_TYPE"),rs1.getString("ALERT_STATUS"),rs1.getString("ALERT_MESSAGE"),rs1.getDate("ALERT_DATE"),observation);
+			Alert alert = new Alert(rs1.getInt("ALERT_ID"),rs1.getString("ALERT_TYPE"),rs1.getString("ALERT_STATUS"),rs1.getString("ALERT_MESSAGE"),rs1.getDate("ALERT_DATE"),observation);
 			alertList.add(alert);
 		}
 
@@ -361,7 +356,7 @@ public class AlertController {
 				//Add disease
 				Observation observation = new Observation(rs1.getInt("OBSERVATION_ID"), rs1.getString("OBSERVATION_TYPE"),rs1.getString("DESCRIPTION"),rs1.getString("MEASURE"), rs1.getString("METRIC"));
 				HealthSystemUser patient = new HealthSystemUser(rs1.getString("ID"), rs1.getDate("DOB"), rs1.getString("GENDER"), rs1.getString("ADDRESS"), rs1.getString("NAME"), rs1.getString("TYPE"));
-				Alert alert = new Alert(rs1.getString("ALERT_ID"),rs1.getString("ALERT_TYPE"),rs1.getString("ALERT_STATUS"),rs1.getString("ALERT_MESSAGE"),rs1.getDate("ALERT_DATE"),observation,patient);
+				Alert alert = new Alert(rs1.getInt("ALERT_ID"),rs1.getString("ALERT_TYPE"),rs1.getString("ALERT_STATUS"),rs1.getString("ALERT_MESSAGE"),rs1.getDate("ALERT_DATE"),observation,patient);
 				alertList.add(alert);
 			}
 
@@ -481,17 +476,64 @@ public class AlertController {
 		return alerts;
 	}
 	
-	public void clearAlert(Alert alert)
+	public int clearAlert(Alert alert)
 	{
+		PreparedStatement stmt = null;
+        Connection conn = null;
+        int result = -1;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
 		
+		String query = "UPDATE Alert SET alert_status = ? WHERE alert_id = ?";
+	    stmt = conn.prepareStatement(query); // create a statement
+	    stmt.setString(1, "inactive"); // set input parameter 1
+	    stmt.setInt(2, alert.getId()); // set input parameter 2
+	   
+	    result = stmt.executeUpdate(); // execute insert statement
+			
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+		return result;
+	
 	}
-	
-//	void alertSeen(Alert alert)
-//	{
-//		
-//	}
-	
-	
+	public int insertAlert(Alert alert)
+	{
+		PreparedStatement stmt = null;
+        Connection conn = null;
+        int result = -1;
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		String query = "insert into ALERT(ALERT_TYPE,ALERT_STATUS,ALERT_MESSAGE,ALERT_DATE,OBSERVATION_ID,PATIENT_ID) values(?,?,?,?,?,?)";
+
+	    stmt = conn.prepareStatement(query); // create a statement
+	    stmt.setString(1, alert.getType()); // set input parameter 1
+	    stmt.setString(2, alert.getStatus()); // set input parameter 2
+	    stmt.setString(3, alert.getAlertMessage()); // set input parameter 3
+	    stmt.setDate(4, alert.getDate()); // set input parameter 3
+	    stmt.setInt(5, alert.getObsType().getId());
+	    stmt.setString(6, alert.getPatient().getId());
+	   
+	    result = stmt.executeUpdate(); // execute insert statement
+			
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+		finally {
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+		return result;
+	}
 	
 
 }
