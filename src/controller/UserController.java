@@ -344,7 +344,7 @@ public class UserController {
 		return result;
 	}
 	
-	public int updateUser(String id,String name,String address, String gender,Date date, String password)
+	public int updateUser(String id,String name,String address, String gender,Date date)
 	{
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -355,13 +355,12 @@ public class UserController {
 		conn = ConnectionClass.connect();
 		
 		PreparedStatement update = conn.prepareStatement
-			    ("UPDATE HEALTHSYSTEM_USER SET NAME = ?, ADDRESS = ?, GENDER = ?, DOB = ?, PASSWORD = ? WHERE id = ?");
+			    ("UPDATE HEALTHSYSTEM_USER SET NAME = ?, ADDRESS = ?, GENDER = ?, DOB = ? WHERE id = ?");
 
 		update.setString(1, name);
 		update.setString(2, address);
 		update.setString(3, gender);
 		update.setDate(4, date);
-		update.setString(5, password);
 		update.setString(6, id);
 		
 		result = update.executeUpdate();

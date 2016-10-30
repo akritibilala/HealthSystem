@@ -26,7 +26,7 @@ public class EditProfile extends JFrame {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private JFormattedTextField textField_4;
+	private JTextField textField_4;
 	private HealthSystemUser user;
 	/*private JLabel lblPassword;
 	private JPasswordField passwordField;*/
@@ -105,9 +105,8 @@ public class EditProfile extends JFrame {
 		lblDateOfBirth.setBounds(10, 112, 86, 14);
 		contentPane.add(lblDateOfBirth);
 		
-		SimpleDateFormat format = new SimpleDateFormat("dd-mm-yy");
-		textField_4 = new JFormattedTextField(format);
-		textField_4.setValue(user.getDateOfBirth());
+		textField_4 = new JTextField();
+		textField_4.setText(user.getDateOfBirth().toString());
 		textField_4.setBounds(115, 109, 110, 20);
 		contentPane.add(textField_4);
 		textField_4.setColumns(10);
@@ -124,12 +123,23 @@ public class EditProfile extends JFrame {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				UserController userController = new UserController();
-				userController.updateUser(textField.getText(), textField_1.getText(), 
-						textField_2.getText(), textField_3.getText(), (Date) textField_4.getValue(), "password");
-				System.out.println( (Date) textField_4.getValue());
-				JOptionPane.showMessageDialog(null, "Profile is updated successfully!","Success",
+				String dateString = textField_4.getText();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				java.sql.Date dob;
+					dob = new java.sql.Date(sdf.parse(dateString).getTime());
+				int count = userController.updateUser(textField.getText(), textField_1.getText(), 
+						textField_2.getText(), textField_3.getText(), dob);
+				if(count == 1)
+				JOptionPane.showMessageDialog(null, "Profile is updated successfully!","Edit Profile",
                         JOptionPane.INFORMATION_MESSAGE);
+				else
+					JOptionPane.showMessageDialog(null, "Error in updating profiel!","Edit Profile - Error",JOptionPane.ERROR_MESSAGE);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error in updating profiel!","Edit Profile - Error",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnSave.setBounds(10, 179, 89, 23);

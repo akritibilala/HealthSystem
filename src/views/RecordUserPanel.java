@@ -146,6 +146,13 @@ public class RecordUserPanel extends JFrame {
 				}
 			}
 		});
+		
+		JLabel lblEnterDateIn = new JLabel("(Enter date in yyyy-MM-dd hh:mm:ss)");
+		GridBagConstraints gbc_lblEnterDateIn = new GridBagConstraints();
+		gbc_lblEnterDateIn.insets = new Insets(0, 0, 5, 0);
+		gbc_lblEnterDateIn.gridx = 3;
+		gbc_lblEnterDateIn.gridy = 4;
+		contentPane.add(lblEnterDateIn, gbc_lblEnterDateIn);
 		GridBagConstraints gbc_btnAddObservation = new GridBagConstraints();
 		gbc_btnAddObservation.insets = new Insets(0, 0, 0, 5);
 		gbc_btnAddObservation.gridx = 1;
