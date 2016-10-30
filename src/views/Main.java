@@ -87,24 +87,25 @@ public class Main {
 //				currentUser.setId("P2");
 //				currentUser.setType("Both");
 		        if(currentUser!=null)
-		        if(chkHs.isSelected() && (currentUser.getType().equals("Health Supporter") || currentUser.getType().equals("Both")) )
-                {
-		        	currentUser = new HealthSupporter(currentUser.getId(),currentUser.getDateOfBirth(),currentUser.getGender(),currentUser.getAddress(),currentUser.getName());
-		        	//Login Health Supporter
-                	new HealthSupporterHome().setVisible(true);
-                    frame.dispose();
-                }
-		        else if(!chkHs.isSelected() && (currentUser.getType().equals("Patient") || currentUser.getType().equals("Both")))
 		        {
-		        	//Login Patient
-                	new PatientHome().setVisible(true);
-                    frame.dispose();
+		        	if(chkHs.isSelected() && (currentUser.getType().equals("Health Supporter") || currentUser.getType().equals("Both")) )
+		        	{
+		        		currentUser = new HealthSupporter(currentUser.getId(),currentUser.getDateOfBirth(),currentUser.getGender(),currentUser.getAddress(),currentUser.getName());
+		        		//Login Health Supporter
+		        		new HealthSupporterHome().setVisible(true);
+		        		frame.dispose();
+		        	}
+		        	else if(!chkHs.isSelected() && (currentUser.getType().equals("Patient") || currentUser.getType().equals("Both")))
+		        	{
+		        		//Login Patient
+		        		new PatientHome().setVisible(true);
+		        		frame.dispose();
+		        	}
 		        }
                 else
                 {
-                	JOptionPane.showMessageDialog(null, "Login failed!","Failed!!",
+                	JOptionPane.showMessageDialog(null, "Login failed!","Login",
                             JOptionPane.ERROR_MESSAGE);
-                    System.out.println("sorry");
                 }	
 			}
 		});

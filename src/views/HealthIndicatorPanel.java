@@ -1,6 +1,10 @@
 package views;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,32 +12,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controller.AlertController;
 import controller.RecordController;
 import controller.UserController;
+import model.AlertPatientInfo;
 import model.HealthSystemUser;
 import model.Observation;
 import model.Recommendation;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
 
 public class HealthIndicatorPanel extends JFrame {
 
@@ -77,6 +78,8 @@ public class HealthIndicatorPanel extends JFrame {
 //			Object columnNames[] = { "Column One", "Column Two", "Column Three" };
 //			Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3" },
 //			            { "Row2-Column1", "Row2-Column2", "Row2-Column3" } }; 
+			AlertController alertController = new AlertController();
+			Map<Integer,AlertPatientInfo> obsAlertMap = alertController.getAlertPatientInfoMap(Main.currentUser);
 			int i = 0;
 			for(Map.Entry<Observation, Recommendation> entry: recoMap.entrySet())
 			{
@@ -90,6 +93,23 @@ public class HealthIndicatorPanel extends JFrame {
 				rowData[i][3] = text == null ? "N/A": text.toString();
 				Integer frequency = entry.getValue().getFrequency();
 				rowData[i][4] = frequency == null ? "N/A": frequency.toString();
+				if(obsAlertMap.get(entry.getKey().getId())!=null)
+				{
+				AlertPatientInfo info = obsAlertMap.get(entry.getKey().getId());
+				Integer alertPercentageThreshold = info.getAlertPercentageThreshold();
+				rowData[i][5] = alertPercentageThreshold.toString();
+				Integer alertObservationThreshold = info.getAlertObservationThreshold();
+				rowData[i][6] = alertObservationThreshold.toString();
+				Integer alertFrequencyThreshold = info.getAlertFrequencyThreshold();
+				rowData[i][7] = alertFrequencyThreshold.toString();
+				}
+				else
+				{
+				rowData[i][5] = "N/A";
+				rowData[i][6] = "N/A";
+				rowData[i][7] = "N/A";
+				}
+				i++;
 				i++;
 				observationList.add(entry.getKey());
 				cmbxObs.addItem(entry.getKey().getType());

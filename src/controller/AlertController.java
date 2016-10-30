@@ -539,5 +539,60 @@ public class AlertController {
 		return result;
 	}
 	
+	public Map<Integer, AlertPatientInfo> getAlertPatientInfoMap(HealthSystemUser user)
+	{
+		AlertPatientInfo alertPatientInfo = null;
+        Statement stmt = null;
+        ResultSet rs1 = null;
+        Connection conn = null;
+        Map<Integer, AlertPatientInfo> obsAlertMap = new HashMap<>();
+		try
+		{
+			
+		conn = ConnectionClass.connect();
+		
+		// Create a statement object that will be sending your
+		// SQL statements to the DBMS
+		stmt = conn.createStatement();
+
+		String sql = "SELECT * "
+				+ "FROM ALERT_PATIENT_INFO where PATIENT_ID = '"+user.getId()+"'";
+		//Login
+			rs1 = stmt.executeQuery(sql);
+			
+			if(rs1.next()) {
+				//Add user details
+				int obsId = rs1.getInt("OBSERVATION_ID");
+				alertPatientInfo = new AlertPatientInfo();
+				alertPatientInfo.setPatient(user);
+				Observation observation = new Observation();
+				observation.setId(obsId);
+				alertPatientInfo.setObservation(observation);
+				alertPatientInfo.setAlertPercentageThreshold(rs1.getInt("ALERT_PERCENTAGE_THRESHOLD"));
+				alertPatientInfo.setAlertObservationThreshold(rs1.getInt("ALERT_OBS_THRESHOLD"));
+				alertPatientInfo.setAlertFrequencyThreshold(rs1.getInt("ALERT_FREQUENCY_THRESHOLD"));
+				obsAlertMap.put(obsId, alertPatientInfo);
+			}
+
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+            alertPatientInfo = new AlertPatientInfo();
+            HealthSystemUser user1 = new HealthSystemUser();
+            user1.setId("P2");
+            Observation observation1 = new Observation();
+            observation1.setId(5);
+            alertPatientInfo.setPatient(user);
+            alertPatientInfo.setObservation(observation1);
+            alertPatientInfo.setAlertObservationThreshold(2);
+            alertPatientInfo.setAlertPercentageThreshold(50);
+        }
+		finally {
+            ConnectionClass.close(rs1);
+            ConnectionClass.close(stmt);
+            ConnectionClass.close(conn);
+        }
+		return obsAlertMap;
+	}
+	
 
 }
