@@ -121,7 +121,7 @@ public class AlertController {
 				
 				//Low Frequency
 				Integer frequency = recomendation.getFrequency();
-				if(frequency>0)
+				if(frequency!=null && frequency>0)
 				{
 					Connection conn = null;
 					Statement stmt = null;
@@ -509,10 +509,9 @@ public class AlertController {
 			
 		conn = ConnectionClass.connect();
 		
-		String query = "UPDATE Alert SET alert_status = ? WHERE alert_id = ?";
+		String query = "DELETE FROM Alert WHERE alert_id = ?";
 	    stmt = conn.prepareStatement(query); // create a statement
-	    stmt.setString(1, "inactive"); // set input parameter 1
-	    stmt.setInt(2, alert.getId()); // set input parameter 2
+	    stmt.setInt(1, alert.getId()); // set input parameter 2
 	   
 	    result = stmt.executeUpdate(); // execute insert statement
 			
