@@ -101,8 +101,7 @@ public class ProfilePanel extends JFrame {
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				new EditProfile(Main.currentUser).setVisible(true);
+				new EditProfile(user).setVisible(true);
 			}
 		});
 		btnEdit.setBounds(13, 181, 89, 23);

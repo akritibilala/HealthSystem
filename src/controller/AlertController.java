@@ -481,7 +481,7 @@ public class AlertController {
 		return alerts;
 	}
 	
-	void clearAlert(Alert alert)
+	public void clearAlert(Alert alert)
 	{
 		
 	}

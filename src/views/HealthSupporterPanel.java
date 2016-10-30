@@ -76,6 +76,11 @@ public class HealthSupporterPanel extends JFrame {
 		JLabel lblUserIs = new JLabel("If the\u206D user is not visible in the drop-down you can sign him up below!");
 		
 		JButton btnSignup = new JButton("Signup");
+		btnSignup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new Signup().setVisible(true);
+			}
+		});
 		
 		JComboBox cmbxType = new JComboBox();
 		cmbxType.setModel(new DefaultComboBoxModel(new String[] {"PRIMARY", "SECONDARY"}));
@@ -85,13 +90,13 @@ public class HealthSupporterPanel extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(12)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblUserIs, GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+						.addComponent(lblUserIs, GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(17)
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE))
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(40)
-							.addComponent(cmbxType, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(cmbxType, 0, 179, Short.MAX_VALUE)
 							.addGap(57)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(cmbxHs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -100,11 +105,9 @@ public class HealthSupporterPanel extends JFrame {
 									.addComponent(cmbxUsers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 							.addGap(42)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnViewDetails, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-								.addComponent(btnAddDetails, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(260)
-							.addComponent(btnSignup, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
+								.addComponent(btnViewDetails, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+								.addComponent(btnAddDetails, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)))
+						.addComponent(btnSignup, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(

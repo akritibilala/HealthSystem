@@ -65,6 +65,7 @@ public class EditProfile extends JFrame {
 		contentPane.add(lblUid);
 		
 		textField = new JTextField();
+		textField.setEditable(false);
 		textField.setText(user.getId());
 		textField.setBounds(115, 8, 110, 20);
 		contentPane.add(textField);
